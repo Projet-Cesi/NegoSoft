@@ -1,7 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+//prendre exemple sur NegoSoftWeb/Program.cs pour la configuration de la base de données
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
