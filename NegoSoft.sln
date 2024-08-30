@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoSoftWeb", "NegoSoftWeb\NegoSoftWeb.csproj", "{709D34D2-B0A6-47D9-8BBA-8226253D98CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoSoftWine", "NegoSoftWine\NegoSoftWine.csproj", "{13F05F97-9A50-45E3-84F0-4044E92FCBB5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{709D34D2-B0A6-47D9-8BBA-8226253D98CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{709D34D2-B0A6-47D9-8BBA-8226253D98CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{709D34D2-B0A6-47D9-8BBA-8226253D98CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{709D34D2-B0A6-47D9-8BBA-8226253D98CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
