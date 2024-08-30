@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoSoftWeb", "NegoSoftWeb\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoSoftWine", "NegoSoftWine\NegoSoftWine.csproj", "{13F05F97-9A50-45E3-84F0-4044E92FCBB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoAPI", "NegoAPI\NegoAPI.csproj", "{C7B17876-BA72-4959-896B-43323AC453D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13F05F97-9A50-45E3-84F0-4044E92FCBB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7B17876-BA72-4959-896B-43323AC453D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7B17876-BA72-4959-896B-43323AC453D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7B17876-BA72-4959-896B-43323AC453D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7B17876-BA72-4959-896B-43323AC453D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
