@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
 using DotNetEnv;
+using NegoSoftShared.Models;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NegoSoftShared.Models;
 
 namespace NegoAPI.Controllers
 {
