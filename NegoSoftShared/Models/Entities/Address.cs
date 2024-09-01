@@ -15,29 +15,37 @@ namespace NegoSoftShared.Models.Entities
         [Column("add_id")]
         public Guid AddId { get; set; }
 
+        [Required]
         [Column("add_delivery_street")]
         public string AddDeliveryStreet { get; set; }
 
+        [Required]
         [Column("add_delivery_city")]
         public string AddDeliveryCity { get; set; }
 
+        [Required]
         [Column("add_delivery_zip_code")]
         public string AddDeliveryZipCode { get; set; }
 
+        [Required]
         [Column("add_delivery_country")]
         public string AddDeliveryCountry { get; set; }
 
+        [Required]
         [Column("add_billing_street")]
         public string AddBillingStreet { get; set; }
 
+        [Required]
         [Column("add_billing_city")]
 
         public string AddBillingCity { get; set; }
 
+        [Required]
         [Column("add_billing_zip_code")]
 
         public string AddBillingZipCode { get; set; }
 
+        [Required]
         [Column("add_billing_country")]
 
         public string AddBillingCountry { get; set; }
@@ -45,8 +53,8 @@ namespace NegoSoftShared.Models.Entities
         // Propriétés de navigation de la classe permettant de naviguer entre les différentes classes (voir cours sur les relations entre les classes)
         public Customer Customer { get; set; }
         public Supplier Supplier { get; set; }
-        public ICollection<CustomerOrder> CustomerOrders { get; set; }
-        public ICollection<SupplierOrder> SupplierOrders { get; set; }
+        public CustomerOrder CustomerOrder { get; set; }
+        public SupplierOrder SupplierOrder { get; set; }
     }
 
 }

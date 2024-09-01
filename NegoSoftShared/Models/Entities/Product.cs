@@ -17,26 +17,35 @@ namespace NegoSoftShared.Models.Entities
         [Column("pro_id")]
         public Guid ProId { get; set; }
 
+        [Required]
         [Column("pro_name")]
         public string ProName { get; set; }
 
         [Column("pro_description")]
-        public string ProDescription { get; set; }
+        public string? ProDescription { get; set; }
 
+        [Required]
         [ForeignKey("Supplier")]
         [Column("pro_supplier_id")]
         public Guid ProSupplierId { get; set; }
 
+        [Required]
         [Column("pro_price")]
         public float ProPrice { get; set; }
 
+        [Column("pro_box_price")]
+        public float? ProBoxPrice { get; set; }
+
+        [Required]
         [ForeignKey("Type")]
         [Column("pro_type_id")]
         public Guid ProTypeId { get; set; }
 
+        [Required]
         [Column("pro_stock")]
         public int ProStock { get; set; }
 
+        [Required]
         [Column("pro_picture_name")]
         public string ProPictureName { get; set; }
 

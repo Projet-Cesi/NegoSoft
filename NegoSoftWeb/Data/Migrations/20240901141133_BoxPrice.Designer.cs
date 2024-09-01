@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NegoSoftWeb.Data;
 
@@ -11,9 +12,11 @@ using NegoSoftWeb.Data;
 namespace NegoSoftWeb.Data.Migrations
 {
     [DbContext(typeof(NegoSoftContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240901141133_BoxPrice")]
+    partial class BoxPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -419,11 +422,12 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("pro_id");
 
-                    b.Property<float?>("ProBoxPrice")
+                    b.Property<float>("ProBoxPrice")
                         .HasColumnType("real")
                         .HasColumnName("pro_box_price");
 
                     b.Property<string>("ProDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("pro_description");
 
@@ -474,6 +478,7 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnName("sup_default_address_id");
 
                     b.Property<string>("SupEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("sup_email");
 
