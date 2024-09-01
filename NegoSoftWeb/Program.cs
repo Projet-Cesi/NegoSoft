@@ -4,6 +4,7 @@ using NegoSoftWeb.Data;
 using DotNetEnv;
 using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Services.ProductService;
+using NegoSoftWeb.Services.CartService;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,16 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<NegoSoftContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
+
+//add session to the application
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // durée de la session
+    options.Cookie.HttpOnly = true; // le cookie de session ne peut pas être accédé par le client
+    options.Cookie.IsEssential = true; // le cookie de session est essentiel
+});
+builder.Services.AddHttpContextAccessor(); // pour accéder à la session dans les services
 
 var app = builder.Build();
 
@@ -38,6 +49,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession(); 
 
 app.UseAuthorization();
 
