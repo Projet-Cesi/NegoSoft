@@ -97,35 +97,32 @@ namespace NegoSoftWeb.Controllers
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ProId,ProName,ProDescription,ProSupplierId,ProPrice,ProBoxPrice,ProTypeId,ProStock,ProPictureName")] Product product)
+        public async Task<IActionResult> Edit(Guid id, Product product)
         {
             if (id != product.ProId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var oldProduct = await _productService.GetProductByIdAsync(id);
+            product.ProPictureName = oldProduct.ProPictureName;
+            try
             {
-                try
+                await _productService.UpdateProductAsync(product);
+            }
+            catch (Exception)
+            {
+                if (!await _productService.ProductExistsAsync(product.ProId))
                 {
-                    await _productService.UpdateProductAsync(product);
+                    return NotFound();
                 }
-                catch (Exception)
+                else
                 {
-                    if (!await _productService.ProductExistsAsync(product.ProId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["ProSupplierId"] = new SelectList(_context.Suppliers, "SupId", "SupName", product.ProSupplierId);
             ViewData["ProTypeId"] = new SelectList(_context.Types, "TypId", "TypLibelle", product.ProTypeId);
-            return View(product);
+            return RedirectToAction(nameof(Index)); 
         }
 
         // GET: Product/Delete/5

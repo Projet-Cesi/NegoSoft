@@ -31,6 +31,7 @@ namespace NegoSoftWeb.Services.ProductService
             return await _context.Products
                 .Include(p => p.Supplier)
                 .Include(p => p.Type)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ProId == id);
         }
 
