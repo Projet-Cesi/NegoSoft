@@ -19,6 +19,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+//add session to the application
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // durée de la session
+    options.Cookie.HttpOnly = true; // le cookie de session ne peut pas être accédé par le client
+    options.Cookie.IsEssential = true; // le cookie de session est essentiel
+});
+builder.Services.AddHttpContextAccessor(); // pour accéder à la session dans les services
+
 var app = builder.Build();
 
 
@@ -40,6 +49,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession(); 
 
 app.MapControllerRoute(
     name: "default",

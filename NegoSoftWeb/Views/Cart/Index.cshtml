@@ -1,0 +1,34 @@
+﻿@using NegoSoftWeb.Models.Entities
+@model List<CartItem>
+
+<div class="container mt-5">
+    <h1>Your Cart</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProName</td>
+                    <td>@item.ProQuantity</td>
+                    <td>@item.ProPrice $</td>
+                    <td>@(item.ProQuantity * item.ProPrice) $</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-id="@item.ProId" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-right">
+        <h3>Total: @Model.Sum(item => item.ProQuantity * item.ProPrice) $</h3>
+    </div>
+</div>

@@ -32,11 +32,12 @@
                     <span>Description non disponible</span>
                 }
             </p>
-            <div class="mt-4">
-                <a asp-action="AddToCart" asp-route-id="@Model?.ProId" class="btn btn-primary">
-                    <i class="fa fa-shopping-cart"></i> Ajouter au panier
-                </a>
-            </div>
+            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                <input type="hidden" name="id" value="@Model.ProId" />
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-shopping-cart"></i> Add to cart
+                </button>
+            </form>
             <div class="mt-3">
                 <a asp-action="Edit" asp-route-id="@Model?.ProId" class="btn btn-secondary">Modifier</a>
                 <a asp-action="Delete" asp-route-id="@Model?.ProId" class="btn btn-danger">Supprimer</a>
