@@ -15,13 +15,16 @@ namespace NegoSoftShared.Models.Entities
         [Column("ap_id")]
         public Guid ApId { get; set; }
 
+        [Required]
         [ForeignKey("Product")]
         [Column("pro_type_id")]
         public Guid ProTypeId { get; set; }
 
+        [Required]
         [Column("ap_alcohol_volume")]
         public float ApAlcoholVolume { get; set; }
 
+        [Required]
         [Column("ap_year")]
         public int ApYear { get; set; }
 

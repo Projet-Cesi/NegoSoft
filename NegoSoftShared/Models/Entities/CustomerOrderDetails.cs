@@ -15,17 +15,21 @@ namespace NegoSoftShared.Models.Entities
         [Column("cod_id")]
         public Guid CodId { get; set; }
 
+        [Required]
         [Column("cod_quantity")]
         public int CodQuantity { get; set; }
 
+        [Required]
         [ForeignKey("CustomerOrder")]
         [Column("cod_order_id")]
         public Guid CodOrderId { get; set; }
 
+        [Required]
         [ForeignKey("Product")]
         [Column("cod_product_id")]
         public Guid CodProductId { get; set; }
 
+        [Required]
         [Column("cod_price")]
         public float CodPrice { get; set; }
 

@@ -15,6 +15,7 @@ namespace NegoSoftShared.Models.Entities
         [Column("typ_id")]
         public Guid TypId { get; set; }
 
+        [Required]
         [Column("typ_libelle")]
         public string TypLibelle { get; set; }
 

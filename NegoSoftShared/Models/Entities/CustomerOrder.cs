@@ -15,20 +15,25 @@ namespace NegoSoftShared.Models.Entities
         [Column("co_id")]
         public Guid CoId { get; set; }
 
+        [Required]
         [Column("co_date")]
         public DateTime CoDate { get; set; } = DateTime.Now;
 
+        [Required]
         [Column("co_state")]
         public string CoState { get; set; } = "En attente";
 
+        [Required]
         [ForeignKey("Customer")]
         [Column("co_customer_id")]
         public Guid CoCustomerId { get; set; }
 
+        [Required]
         [ForeignKey("Address")]
         [Column("co_address_id")]
         public Guid CoAddressId { get; set; }
 
+        [Required]
         [Column("co_total")]
         public float CoTotal { get; set; }
          

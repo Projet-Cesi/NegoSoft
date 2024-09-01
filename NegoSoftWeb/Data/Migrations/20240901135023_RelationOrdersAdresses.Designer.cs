@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NegoSoftWeb.Data;
 
@@ -11,9 +12,11 @@ using NegoSoftWeb.Data;
 namespace NegoSoftWeb.Data.Migrations
 {
     [DbContext(typeof(NegoSoftContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240901135023_RelationOrdersAdresses")]
+    partial class RelationOrdersAdresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -349,6 +352,9 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("co_id");
 
+                    b.Property<Guid?>("AddressAddId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CoAddressId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("co_address_id");
@@ -371,6 +377,8 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnName("co_total");
 
                     b.HasKey("CoId");
+
+                    b.HasIndex("AddressAddId");
 
                     b.HasIndex("CoAddressId")
                         .IsUnique();
@@ -419,11 +427,8 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("pro_id");
 
-                    b.Property<float?>("ProBoxPrice")
-                        .HasColumnType("real")
-                        .HasColumnName("pro_box_price");
-
                     b.Property<string>("ProDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("pro_description");
 
@@ -474,6 +479,7 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnName("sup_default_address_id");
 
                     b.Property<string>("SupEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("sup_email");
 
@@ -502,6 +508,9 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("so_id");
 
+                    b.Property<Guid?>("AddressAddId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("SoAddressId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("so_address_id");
@@ -524,6 +533,8 @@ namespace NegoSoftWeb.Data.Migrations
                         .HasColumnName("so_total");
 
                     b.HasKey("SoId");
+
+                    b.HasIndex("AddressAddId");
 
                     b.HasIndex("SoAddressId")
                         .IsUnique();
@@ -657,8 +668,12 @@ namespace NegoSoftWeb.Data.Migrations
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.CustomerOrder", b =>
                 {
+                    b.HasOne("NegoSoftShared.Models.Entities.Address", null)
+                        .WithMany("CustomerOrders")
+                        .HasForeignKey("AddressAddId");
+
                     b.HasOne("NegoSoftShared.Models.Entities.Address", "Address")
-                        .WithOne("CustomerOrder")
+                        .WithOne()
                         .HasForeignKey("NegoSoftShared.Models.Entities.CustomerOrder", "CoAddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -725,8 +740,12 @@ namespace NegoSoftWeb.Data.Migrations
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.SupplierOrder", b =>
                 {
+                    b.HasOne("NegoSoftShared.Models.Entities.Address", null)
+                        .WithMany("SupplierOrders")
+                        .HasForeignKey("AddressAddId");
+
                     b.HasOne("NegoSoftShared.Models.Entities.Address", "Address")
-                        .WithOne("SupplierOrder")
+                        .WithOne()
                         .HasForeignKey("NegoSoftShared.Models.Entities.SupplierOrder", "SoAddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -766,14 +785,12 @@ namespace NegoSoftWeb.Data.Migrations
                     b.Navigation("Customer")
                         .IsRequired();
 
-                    b.Navigation("CustomerOrder")
-                        .IsRequired();
+                    b.Navigation("CustomerOrders");
 
                     b.Navigation("Supplier")
                         .IsRequired();
 
-                    b.Navigation("SupplierOrder")
-                        .IsRequired();
+                    b.Navigation("SupplierOrders");
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Customer", b =>

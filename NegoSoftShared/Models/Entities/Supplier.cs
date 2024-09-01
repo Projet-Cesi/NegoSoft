@@ -16,16 +16,19 @@ namespace NegoSoftShared.Models.Entities
         [Column("sup_id")]
         public Guid SupId { get; set; }
 
+        [Required]
         [Column("sup_name")]
         public string SupName { get; set; }
 
+        [Required]
         [ForeignKey("Address")]
         [Column("sup_default_address_id")]
         public Guid SupDefaultAddressId { get; set; }
 
         [Column("sup_email")]
-        public string SupEmail { get; set; }
+        public string? SupEmail { get; set; }
 
+        [Required]
         [Column("sup_phone")]
         public string SupPhone { get; set; }
 

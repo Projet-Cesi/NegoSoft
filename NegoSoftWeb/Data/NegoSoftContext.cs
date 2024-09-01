@@ -30,8 +30,8 @@ namespace NegoSoftWeb.Data
             // Configuration des relations pour Customer
             modelBuilder.Entity<Customer>()
                 .HasOne(c => c.DefaultAddress) // Un client a une adresse par défaut
-                .WithMany() // Une adresse peut être associée à plusieurs clients
-                .HasForeignKey(c => c.CusDefaultAddressId) // La clé étrangère de l'adresse par défaut du client
+                .WithOne(a => a.Customer) // Une adresse est associée à un client
+                .HasForeignKey<Customer>(c => c.CusDefaultAddressId) // La clé étrangère de l'adresse par défaut du client
                 .OnDelete(DeleteBehavior.Restrict);  // Pas d'action automatique lors de la suppression
 
             // Configuration des relations pour CustomerOrder
@@ -43,8 +43,8 @@ namespace NegoSoftWeb.Data
 
             modelBuilder.Entity<CustomerOrder>()
                 .HasOne(co => co.Address) // Une commande client est associée à une adresse
-                .WithMany() // Une adresse peut être associée à plusieurs commandes
-                .HasForeignKey(co => co.CoAddressId)  // La clé étrangère de l'adresse de la commande
+                .WithOne(a => a.CustomerOrder) // Une adresse peut être associée à une commande client
+                .HasForeignKey<CustomerOrder>(co => co.CoAddressId) // La clé étrangère de l'adresse de la commande
                 .OnDelete(DeleteBehavior.Restrict);  // Quand une adresse est supprimée, on ne supprime pas automatiquement les commandes associées
 
             // Configuration des relations pour SupplierOrder
@@ -56,8 +56,8 @@ namespace NegoSoftWeb.Data
 
             modelBuilder.Entity<SupplierOrder>()
                 .HasOne(so => so.Address) // Une commande fournisseur est associée à une adresse
-                .WithMany() // Une adresse peut être associée à plusieurs commandes
-                .HasForeignKey(so => so.SoAddressId) // La clé étrangère de l'adresse de la commande
+                .WithOne(a => a.SupplierOrder) // Une adresse peut être associée à une commande fournisseur
+                .HasForeignKey<SupplierOrder>(so => so.SoAddressId) // La clé étrangère de l'adresse de la commande
                 .OnDelete(DeleteBehavior.Restrict);  // Quand une adresse est supprimée, on ne supprime pas automatiquement les commandes associées
 
             // Configuration des relations pour Product

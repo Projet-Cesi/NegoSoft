@@ -15,9 +15,11 @@ namespace NegoSoftShared.Models.Entities
         [Column("so_id")]
         public Guid SoId { get; set; }
 
+        [Required]
         [Column("so_total")]
         public float SoTotal { get; set; }
 
+        [Required]
         [ForeignKey("Supplier")]
         [Column("so_supplier_id")]
         public Guid SoSupplierId { get; set; }
@@ -27,9 +29,11 @@ namespace NegoSoftShared.Models.Entities
         [Column("so_address_id")]
         public Guid SoAddressId { get; set; }
 
+        [Required]
         [Column("so_state")]
         public string SoState { get; set; } = "En attente";
 
+        [Required]
         [Column("so_date")]
         public DateTime SoDate { get; set; } = DateTime.Now;
 
