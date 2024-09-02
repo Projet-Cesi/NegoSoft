@@ -6,6 +6,7 @@ using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Services.ProductService;
 using NegoSoftWeb.Services.CartService;
 using NegoSoftWeb.Services.CustomerService;
+using NegoSoftWeb.Services.AddressService;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 //add session to the application
 builder.Services.AddSession(options =>
