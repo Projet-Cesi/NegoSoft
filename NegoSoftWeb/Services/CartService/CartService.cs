@@ -32,7 +32,7 @@ namespace NegoSoftWeb.Services.CartService
         }
 
         // Action pour ajouter un produit au panier
-        public async Task AddToCartAsync(Guid id)
+        public async Task AddToCartAsync(Guid id, int quantity)
         {
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
@@ -43,6 +43,11 @@ namespace NegoSoftWeb.Services.CartService
             var cart = await GetCartAsync();
             var cartItem = cart.FirstOrDefault(c => c.ProId == product.ProId);
 
+            if (quantity > product.ProStock)
+            {
+                throw new Exception("Quantité insuffisante en stock");
+            }
+
             if (cartItem == null)
             {
                 cart.Add(new CartItem
@@ -50,12 +55,12 @@ namespace NegoSoftWeb.Services.CartService
                     ProId = product.ProId,
                     ProName = product.ProName,
                     ProPrice = product.ProPrice,
-                    ProQuantity = 1
+                    ProQuantity = quantity
                 });
             }
             else
             {
-                cartItem.ProQuantity++;
+                cartItem.ProQuantity += quantity;
             }
 
             await SaveCartAsync(cart);

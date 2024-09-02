@@ -5,6 +5,7 @@ using DotNetEnv;
 using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Services.ProductService;
 using NegoSoftWeb.Services.CartService;
+using NegoSoftWeb.Services.CustomerService;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 //add session to the application
 builder.Services.AddSession(options =>

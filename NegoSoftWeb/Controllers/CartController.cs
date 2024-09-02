@@ -22,18 +22,18 @@ namespace NegoSoftWeb.Controllers
 
         //  Action pour ajouter un produit au panier
         [HttpPost]
-        public async Task<IActionResult> AddToCart(Guid id)
+        public async Task<IActionResult> AddToCart(Guid id, int quantity)
         {
             try
             {
-                await _cartService.AddToCartAsync(id);
+                await _cartService.AddToCartAsync(id, quantity);
             }
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Product");
         }
 
         // Action pour retirer un produit du panier

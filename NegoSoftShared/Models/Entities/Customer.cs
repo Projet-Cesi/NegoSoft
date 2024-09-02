@@ -33,7 +33,7 @@ namespace NegoSoftShared.Models.Entities
         
         [ForeignKey("Address")]
         [Column("cus_default_address_id")]
-        public Guid CusDefaultAddressId { get; set; }
+        public Guid? CusDefaultAddressId { get; set; }
 
         // Propriétés de navigation de la classe permettant de naviguer entre les différentes classes (voir cours sur les relations entre les classes)
         public Address DefaultAddress { get; set; }
