@@ -6,70 +6,72 @@ using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Models.Extensions;
 
-public class CustomerController : Controller
-{
-    private readonly ICustomerService _customerService;
-
-    public CustomerController(ICustomerService customerService)
+namespace NegoSoftWeb.Controllers 
+{ 
+    public class CustomerController : Controller
     {
-        _customerService = customerService;
-    }
+        private readonly ICustomerService _customerService;
 
-    // GET: Customers/Details/{CusId}
-    public async Task<IActionResult> Details(Guid? id)
-    {
-        if (id == null)
+        public CustomerController(ICustomerService customerService)
         {
-            return NotFound();
+            _customerService = customerService;
         }
 
-        var customer = await _customerService.GetCustomerByIdAsync(id.Value);
-        if (customer == null)
+        // GET: Customers/Details/{CusId}
+        public async Task<IActionResult> Details(Guid? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _customerService.GetCustomerByIdAsync(id.Value);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return View(customer);
         }
 
-        return View(customer);
-    }
-
-    // GET: Customers/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: Customers/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CustomerViewModel customer)
-    {
-        if (customer == null)
+        // GET: Customers/Create
+        public IActionResult Create()
         {
-               return BadRequest();
+            return View();
         }
 
-        if (ModelState.IsValid)
+        // POST: Customers/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CustomerViewModel customer)
         {
-            _customerService.SaveCustomer(customer);
-            return RedirectToAction("Create","Address");
+            if (customer == null)
+            {
+                   return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _customerService.SaveCustomer(customer);
+                return RedirectToAction("OrderAddress", "Address");
+            }
+            return View(customer);
         }
-        return View(customer);
-    }
 
-    // POST: Customers/SetDefaultAdress/{CusId}
+        // POST: Customers/SetDefaultAdress/{CusId}
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetDefaultAdress(Guid CusId, Guid AddId)
-    {
-        var customer = await _customerService.GetCustomerByIdAsync(CusId);
-        if (customer == null)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetDefaultAdress(Guid CusId, Guid AddId)
         {
-            return NotFound();
+            var customer = await _customerService.GetCustomerByIdAsync(CusId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            customer.CusDefaultAddressId = AddId;
+            await _customerService.UpdateCustomerAsync(customer);
+            return RedirectToAction("Index", "Customer");
         }
-        customer.CusDefaultAddressId = AddId;
-        await _customerService.UpdateCustomerAsync(customer);
-        return RedirectToAction("Index", "Customer");
     }
 }
-
