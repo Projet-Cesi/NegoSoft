@@ -47,3 +47,27 @@
 
     <button type="submit" class="btn btn-primary">Save Address</button>
 </form>
+
+<form id="checkout-form" method="post" class="mt-4">
+	<button type="submit" class="btn btn-primary">Proceed to Payment</button>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const response = await fetch('/Payments/CreateCheckoutSession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const sessionId = await response.json().then(data => data.id);
+        const stripe = Stripe('pk_test_51Pt2eWGXcf21H8OOwY3ZEwcnpMOkilNs10pk28MooauJN1LrozrH5GpJMMcimX5EoqTxIkOGXOVCrWXxkfCgPn9f00lZIvxjXg');
+        const { error } = await stripe.redirectToCheckout({ sessionId });
+        if (error) {
+            console.error('Error redirecting to checkout:', error);
+        }
+    });
+</script>
