@@ -7,6 +7,8 @@ using NegoSoftWeb.Services.ProductService;
 using NegoSoftWeb.Services.CartService;
 using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Services.AddressService;
+using Stripe;
+using NegoSoftWeb.Models.Entities;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -20,9 +22,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<NegoSoftContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, NegoSoftWeb.Services.ProductService.ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ICustomerService, NegoSoftWeb.Services.CustomerService.CustomerService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 
 //add session to the application
@@ -33,6 +35,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // le cookie de session est essentiel
 });
 builder.Services.AddHttpContextAccessor(); // pour accéder à la session dans les services
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 

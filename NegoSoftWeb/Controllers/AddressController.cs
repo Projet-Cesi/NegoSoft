@@ -49,7 +49,7 @@ namespace NegoSoftWeb.Controllers
             if (ModelState.IsValid)
             {
                 _addressService.SaveAddress(address);
-                return RedirectToAction("OrderAddress", "Address");
+                return View(address);
             }
             return View(address);
         }
