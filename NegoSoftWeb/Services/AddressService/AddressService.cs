@@ -35,7 +35,7 @@ namespace NegoSoftWeb.Services.AddressService
             return await _context.Addresses.FirstOrDefaultAsync(a => a.AddId == id);
         }
 
-        public async Task AddAddressAsync(AddressViewModel address)
+        public async Task<Address> AddAddressAsync(AddressViewModel address)
         {
             var newAddress = new Address
             {
@@ -51,22 +51,7 @@ namespace NegoSoftWeb.Services.AddressService
             };
             await _context.Addresses.AddAsync(newAddress);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAddressAsync(Address address)
-        {
-            _context.Addresses.Update(address);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAddressAsync(Guid id)
-        {
-            var address = await _context.Addresses.FirstOrDefaultAsync(a => a.AddId == id);
-            if (address != null)
-            {
-                _context.Addresses.Remove(address);
-                await _context.SaveChangesAsync();
-            }
+            return newAddress;
         }
 
         public async Task<bool> AddressExists(Guid id)

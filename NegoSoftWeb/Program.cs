@@ -7,8 +7,10 @@ using NegoSoftWeb.Services.ProductService;
 using NegoSoftWeb.Services.CartService;
 using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Services.AddressService;
+using NegoSoftWeb.Services.CustomerOrderService;
 using Stripe;
 using NegoSoftWeb.Models.Entities;
+
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,7 @@ builder.Services.AddScoped<IProductService, NegoSoftWeb.Services.ProductService.
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICustomerService, NegoSoftWeb.Services.CustomerService.CustomerService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
 
 //add session to the application
 builder.Services.AddSession(options =>

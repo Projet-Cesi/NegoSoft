@@ -9,9 +9,7 @@ namespace NegoSoftWeb.Services.AddressService
         Task<AddressViewModel> GetAddressAsync();
         void SaveAddress(AddressViewModel address);
         Task<Address> GetAddressByIdAsync(Guid id);
-        Task AddAddressAsync(AddressViewModel address);
-        Task UpdateAddressAsync(Address address);
-        Task DeleteAddressAsync(Guid id);
+        Task<Address> AddAddressAsync(AddressViewModel address);
         Task<bool> AddressExists(Guid id);
     }
 }

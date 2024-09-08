@@ -6,17 +6,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Services.CustomerService;
+using NegoSoftWeb.Services.CustomerOrderService;
 
 namespace NegoSoftWeb.Controllers
 {
     public class PaymentsController : Controller
     {
         private readonly ICartService _cartService;
-        private readonly ICustomerService _customerService; // Service pour gérer les clients
+        private readonly ICustomerOrderService _orderService;
+        private readonly ICustomerService _customerService;
 
-        public PaymentsController(ICartService cartService, ICustomerService customerService)
+        public PaymentsController(ICartService cartService, ICustomerOrderService orderService, ICustomerService customerService)
         {
             _cartService = cartService;
+            _orderService = orderService;
             _customerService = customerService;
         }
 
@@ -79,9 +82,10 @@ namespace NegoSoftWeb.Controllers
             return Json(new { id = session.Id });
         }
 
-        public IActionResult Success()
+        public async Task<IActionResult> SuccessAsync()
         {
-            return View();
+            var order = await _orderService.CreateOrderAsync();
+            return View(order);
         }
 
         public IActionResult Cancel()
