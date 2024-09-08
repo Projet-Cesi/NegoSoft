@@ -78,5 +78,11 @@ namespace NegoSoftWeb.Services.CartService
                 await SaveCartAsync(cart);
             }
         }
+
+        public Task ClearCartAsync()
+        {
+            _httpContextAccessor.HttpContext.Session.Remove(CartSessionKey);
+            return Task.CompletedTask;
+        }
     }
 }

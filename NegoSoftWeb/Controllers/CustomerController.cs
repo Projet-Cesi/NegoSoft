@@ -17,23 +17,6 @@ namespace NegoSoftWeb.Controllers
             _customerService = customerService;
         }
 
-        // GET: Customers/Details/{CusId}
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _customerService.GetCustomerByIdAsync(id.Value);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
-        }
-
         // GET: Customers/Create
         public IActionResult Create()
         {

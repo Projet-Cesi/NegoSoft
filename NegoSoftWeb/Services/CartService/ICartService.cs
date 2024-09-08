@@ -8,5 +8,6 @@ namespace NegoSoftWeb.Services.CartService
         Task SaveCartAsync(List<CartItem> cart);
         Task AddToCartAsync(Guid id, int quantity);
         Task RemoveFromCartAsync(Guid id);
+        Task ClearCartAsync();
     }
 }

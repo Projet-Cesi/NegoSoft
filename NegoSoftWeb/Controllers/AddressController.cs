@@ -13,23 +13,6 @@ namespace NegoSoftWeb.Controllers
             _addressService = addressService;
         }
 
-        // GET: Address/Details/{AddId}
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var address = await _addressService.GetAddressByIdAsync(id.Value);
-            if (address == null)
-            {
-                return NotFound();
-            }
-
-            return View(address);
-        }
-
         // GET: Address/OrderAddress
         public IActionResult OrderAddress()
         {

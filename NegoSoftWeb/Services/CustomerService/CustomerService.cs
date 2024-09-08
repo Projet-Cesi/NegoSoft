@@ -36,18 +36,23 @@ namespace NegoSoftWeb.Services.CustomerService
             return await _context.Customers.FirstOrDefaultAsync(c => c.CusId == id);
         }
 
-        public async Task AddCustomerAsync(CustomerViewModel customer)
+        public async Task<Customer> AddCustomerAsync(CustomerViewModel customer)
         {
+            // Log des informations pour vérifier avant l'insertion
+            Console.WriteLine($"Customer Info: Id={customer.CusId}, Name={customer.CusFirstName} {customer.CusLastName}, Email={customer.CusEmail}, Phone={customer.CusPhone}");
+
             var newCustomer = new Customer
             {
                 CusId = Guid.NewGuid(),
                 CusFirstName = customer.CusFirstName,
                 CusLastName = customer.CusLastName,
                 CusEmail = customer.CusEmail,
-                CusPhone = customer.CusPhone,
+                CusPhone = customer.CusPhone
             };
+
             await _context.Customers.AddAsync(newCustomer);
             await _context.SaveChangesAsync();
+            return newCustomer;
         }
 
         public async Task UpdateCustomerAsync(Customer customer)
