@@ -1,3 +1,8 @@
+using NegoAPI.Services.ProductService;
+using Microsoft.EntityFrameworkCore;
+using NegoSoftWeb.Data;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+builder.Services.AddDbContext<NegoSoftContext>(options =>
+    options.UseSqlServer(connectionString));
+
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
