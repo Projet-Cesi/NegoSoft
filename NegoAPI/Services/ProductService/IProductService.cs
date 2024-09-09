@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using NegoSoftShared.Models;
+using NegoSoftShared.Models.Entities;
 
 namespace NegoAPI.Services.ProductService
 {
     public interface IProductService 
     {
-        Task<IEnumerable<NegoSoftShared.Models.Entities.Product>> GetAllProductAsync();
+        Task<IEnumerable<Product>> GetAllProductAsync();
     }
 }
