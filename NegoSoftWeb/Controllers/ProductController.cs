@@ -150,5 +150,34 @@ namespace NegoSoftWeb.Controllers
             await _productService.DeleteProductAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Product/Search
+        public async Task<IActionResult> Search(string searchString, Guid? typeId)
+        {
+        
+            var products = await _productService.GetAllProductsAsync();
+
+            //controle de la recherche
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.ProName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            //on filtre par type de produit si un type est selectionné
+            if (typeId.HasValue)
+            {
+                products = products.Where(p => p.ProTypeId == typeId.Value).ToList();
+            }
+
+            //instanciation du model à passer à la vue contenant les produits filtrés et les types de produits
+            var model = new ProductSearchViewModel
+            {
+                Products = products,
+                ProductTypes = await _context.Types.ToListAsync(),
+                SelectedTypeId = typeId
+            };
+
+            return View(model);
+        }
     }
 }
