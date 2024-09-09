@@ -1,27 +1,21 @@
 ﻿using NegoSoftShared.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using NegoAPI.Services.ProductService;
-using NegoSoftWeb.Data;
-
 
 namespace NegoAPI.Controllers
 {
 
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
 
     public class ProductController : ControllerBase
     {
+        private readonly IProductService _productService;
 
-        private readonly NegoSoftContext dbContext;
-
-        private readonly IProductService productService;
-
-        public ProductController(NegoSoftContext dbContext, IProductService iproductService)
+        public ProductController(IProductService productService)
         {
-            this.dbContext = dbContext;
-            productService = iproductService;
+            _productService = productService;
         }
 
         [HttpGet]
