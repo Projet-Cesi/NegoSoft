@@ -38,9 +38,6 @@ namespace NegoSoftWeb.Services.CustomerService
 
         public async Task<Customer> AddCustomerAsync(CustomerViewModel customer)
         {
-            // Log des informations pour vérifier avant l'insertion
-            Console.WriteLine($"Customer Info: Id={customer.CusId}, Name={customer.CusFirstName} {customer.CusLastName}, Email={customer.CusEmail}, Phone={customer.CusPhone}");
-
             var newCustomer = new Customer
             {
                 CusId = Guid.NewGuid(),

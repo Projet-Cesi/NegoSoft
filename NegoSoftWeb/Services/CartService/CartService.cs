@@ -67,14 +67,21 @@ namespace NegoSoftWeb.Services.CartService
         }
 
         // Action pour retirer un produit du panier
-        public async Task RemoveFromCartAsync(Guid id)
+        public async Task RemoveFromCartAsync(Guid id, int quantity)
         {
             var cart = await GetCartAsync();
             var cartItem = cart.FirstOrDefault(c => c.ProId == id);
 
             if (cartItem != null)
             {
-                cart.Remove(cartItem);
+                if (cartItem.ProQuantity > quantity)
+                {
+                    cartItem.ProQuantity -= quantity;
+                }
+                else
+                {
+                    cart.Remove(cartItem);
+                }
                 await SaveCartAsync(cart);
             }
         }

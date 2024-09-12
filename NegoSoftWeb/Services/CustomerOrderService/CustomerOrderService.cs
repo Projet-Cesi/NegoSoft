@@ -75,8 +75,6 @@ namespace NegoSoftWeb.Services.CustomerOrderService
             await _context.CustomerOrderDetails.AddRangeAsync(orderDetails);
             await _context.SaveChangesAsync();
 
-            await _cartService.ClearCartAsync();
-
             return order;
         }
     }
