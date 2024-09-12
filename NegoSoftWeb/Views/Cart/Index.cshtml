@@ -10,7 +10,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Subtotal</th>
-                <th></th>
+                <th>Remove Quantity</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,16 @@
                     <td>@item.ProPrice $</td>
                     <td>@Math.Round((item.ProQuantity * item.ProPrice), 2) €</td>
                     <td>
-                        <a asp-action="RemoveFromCart" asp-route-id="@item.ProId" class="btn btn-danger">Remove</a>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="id" value="@item.ProId" />
+                            <div class="form-group">
+                                <label for="quantity">Quantity To Remove :</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="@item.ProQuantity" value="1" />
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4">
+                                <i class="fa fa-shopping-cart"></i> Remove
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }

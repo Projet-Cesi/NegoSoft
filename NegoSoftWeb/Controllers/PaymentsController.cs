@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Services.CustomerOrderService;
+using NegoSoftWeb.Services.PaymentsService;
+using Stripe.Climate;
 
 namespace NegoSoftWeb.Controllers
 {
@@ -15,12 +17,14 @@ namespace NegoSoftWeb.Controllers
         private readonly ICartService _cartService;
         private readonly ICustomerOrderService _orderService;
         private readonly ICustomerService _customerService;
+        private readonly IPaymentsService _paymentsService;
 
-        public PaymentsController(ICartService cartService, ICustomerOrderService orderService, ICustomerService customerService)
+        public PaymentsController(ICartService cartService, ICustomerOrderService orderService, ICustomerService customerService, IPaymentsService paymentsService)
         {
             _cartService = cartService;
             _orderService = orderService;
             _customerService = customerService;
+            _paymentsService = paymentsService;
         }
 
         public IActionResult Index()
@@ -31,61 +35,28 @@ namespace NegoSoftWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCheckoutSession()
         {
-            var domain = "https://localhost:7130/"; // Remplacez par votre domaine en production
-            var items = await _cartService.GetCartAsync(); // Récupère les articles du panier
-
-            if (items == null || items.Count == 0)
+            try
             {
-                return BadRequest("Votre panier est vide.");
+                var sessionId = await _paymentsService.CreateCheckoutSessionAsync();
+                return Json(new { id = sessionId });
             }
-
-            var options = new SessionCreateOptions
+            catch (InvalidOperationException ex)
             {
-                PaymentMethodTypes = new List<string> { "card" },
-                LineItems = new List<SessionLineItemOptions>(),
-                Mode = "payment",
-                SuccessUrl = domain + "Payments/Success",
-                CancelUrl = domain + "Payments/Cancel",
-            };
-
-            long totalAmount = 0;
-
-            foreach (var item in items)
-            {
-                var itemAmountInCents = (long)(item.ProPrice * 100);
-
-                options.LineItems.Add(new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = itemAmountInCents,
-                        Currency = "eur",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = item.ProName,
-                        },
-                    },
-                    Quantity = item.ProQuantity,
-                });
-
-                totalAmount += itemAmountInCents * item.ProQuantity;
+                return BadRequest(ex.Message);
             }
-
-            if (totalAmount < 50)
-            {
-                return BadRequest("Le montant total doit être d'au moins 0,50 €.");
-            }
-
-            var service = new SessionService();
-            Session session = service.Create(options);
-
-            return Json(new { id = session.Id });
         }
 
         public async Task<IActionResult> SuccessAsync()
         {
-            var order = await _orderService.CreateOrderAsync();
-            return View(order);
+            try
+            {
+                await _paymentsService.Success();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred while processing your payment.");
+            }
         }
 
         public IActionResult Cancel()
