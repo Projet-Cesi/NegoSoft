@@ -38,6 +38,15 @@ namespace NegoSoftWeb.Services.CustomerService
 
         public async Task<Customer> AddCustomerAsync(CustomerViewModel customer)
         {
+            var customerExists = await CustomerExists(customer);
+
+            // Le client existe déjà alors on le retourne
+            if (customerExists != null)
+            {
+                return customerExists;
+            }
+
+            // Le client n'existe pas alors on l'ajoute
             var newCustomer = new Customer
             {
                 CusId = Guid.NewGuid(),
@@ -68,9 +77,12 @@ namespace NegoSoftWeb.Services.CustomerService
             }
         }
 
-        public async Task<bool> CustomerExists(Guid id)
+        public async Task<Customer> CustomerExists(CustomerViewModel customer)
         {
-            return await _context.Customers.AnyAsync(c => c.CusId == id);
+            return await _context.Customers
+             .FirstOrDefaultAsync(c => c.CusEmail == customer.CusEmail &&
+                                 c.CusFirstName == customer.CusFirstName &&
+                                 c.CusLastName == customer.CusLastName);
         }
     }
 }

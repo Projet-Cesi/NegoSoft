@@ -2,6 +2,7 @@
 using NegoSoftWeb.Services.CartService;
 using NegoSoftWeb.Services.CustomerOrderService;
 using NegoSoftWeb.Services.ProductService;
+using NegoSoftWeb.Services.SupplierOrderService;
 using Stripe.Checkout;
 
 namespace NegoSoftWeb.Services.PaymentsService
@@ -9,14 +10,17 @@ namespace NegoSoftWeb.Services.PaymentsService
     public class PaymentsService : IPaymentsService
     {
         private readonly ICartService _cartService;
-        private readonly ICustomerOrderService _orderService;
+        private readonly ICustomerOrderService _customerOrderService;
         private readonly IProductService _productService;
+        private readonly ISupplierOrderService _supplierOrderService;
 
-        public PaymentsService(ICartService cartService, ICustomerOrderService orderService, IProductService productService)
+        public PaymentsService(ICartService cartService, IProductService productService, ISupplierOrderService SupplierOrderService, ICustomerOrderService customerOrderService)
         {
             _cartService = cartService;
-            _orderService = orderService;
             _productService = productService;
+            _supplierOrderService = SupplierOrderService;
+            _customerOrderService = customerOrderService;
+
         }
         public async Task<string> CreateCheckoutSessionAsync()
         {
@@ -39,6 +43,8 @@ namespace NegoSoftWeb.Services.PaymentsService
 
             long totalAmount = 0;
 
+
+
             foreach (var item in items)
             {
                 var product = await _productService.GetProductByIdAsync(item.ProId);
@@ -47,15 +53,6 @@ namespace NegoSoftWeb.Services.PaymentsService
                     throw new InvalidOperationException($"Product '{item.ProName}' does not exist.");
                 }
 
-                if (item.ProQuantity > product.ProStock)
-                {
-                    // c'est ici qu'il faudra instancier la commande fournisseur pour commander le produit en rupture de stock.
-                    throw new InvalidOperationException($"Insufficient stock for product '{item.ProName}'. Available stock: {product.ProStock}, requested: {item.ProQuantity}");
-                }
-            }
-
-            foreach (var item in items)
-            {
                 var itemAmountInCents = (long)(item.ProPrice * 100);
 
                 options.LineItems.Add(new SessionLineItemOptions
@@ -88,21 +85,49 @@ namespace NegoSoftWeb.Services.PaymentsService
 
         public async Task Success()
         {
-            await _orderService.CreateOrderAsync();
-
-            var cartItems = await _cartService.GetCartAsync();
-
-            foreach (var item in cartItems)
+            try
             {
-                var product = await _productService.GetProductByIdAsync(item.ProId);
-                if (product != null)
-                {
-                    product.ProStock -= item.ProQuantity;
-                    await _productService.UpdateProductAsync(product);
-                }
-            }
+                await _supplierOrderService.CreateSupplierOrderAsync();
+                await _customerOrderService.CreateCustomerOrderAsync();
 
-            await _cartService.ClearCartAsync();
+                var cartItems = await _cartService.GetCartAsync();
+
+                foreach (var item in cartItems)
+                {
+                    var product = await _productService.GetProductByIdAsync(item.ProId);
+                    if (product != null)
+                    {
+                        int newStock = product.ProStock - item.ProQuantity;
+
+                        if (newStock < 0)
+                        {
+                            product.ProStock = 0;
+                        }
+                        else
+                        {
+                            product.ProStock = newStock;
+                        }
+
+                        await _productService.UpdateProductAsync(product);
+                        Console.WriteLine($"Product stock updated for product ID: {product.ProId}");
+
+                        // Debugging: Check if the update was successful
+                        var updatedProduct = await _productService.GetProductByIdAsync(item.ProId);
+                        if (updatedProduct.ProStock != product.ProStock)
+                        {
+                            Console.WriteLine("Stock update did not succeed.");
+                        }
+                    }
+                }
+
+                // Clear the cart after processing all items
+                await _cartService.ClearCartAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions or log them
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
     }
 }

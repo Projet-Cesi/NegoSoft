@@ -21,7 +21,7 @@ namespace NegoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {
-            var products = await productService.GetAllProductAsync();
+            var products = await _productService.GetAllProductAsync();
 
             if (products == null || !products.Any())
             {

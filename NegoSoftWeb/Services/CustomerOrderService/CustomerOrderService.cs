@@ -22,7 +22,7 @@ namespace NegoSoftWeb.Services.CustomerOrderService
             _cartService = cartService;
             _addressService = addressService;
         }
-        public async Task<CustomerOrder> CreateOrderAsync()
+        public async Task<CustomerOrder> CreateCustomerOrderAsync()
         {
 
             var customer = await _customerService.GetCustomerAsync();
@@ -39,7 +39,8 @@ namespace NegoSoftWeb.Services.CustomerOrderService
 
             var newAddress = await _addressService.AddAddressAsync(address);
             var newCustomer = await _customerService.AddCustomerAsync(customer);
-               
+            Console.WriteLine(newCustomer.CusId);
+            Console.WriteLine(newAddress.AddId);
 
             var order = new CustomerOrder
             {

@@ -9,6 +9,8 @@ using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Services.AddressService;
 using NegoSoftWeb.Services.CustomerOrderService;
 using NegoSoftWeb.Services.PaymentsService;
+using NegoSoftWeb.Services.SupplierOrderService;
+using NegoSoftWeb.Services.SupplierService;
 using Stripe;
 using NegoSoftWeb.Models.Entities;
 
@@ -31,6 +33,8 @@ builder.Services.AddScoped<ICustomerService, NegoSoftWeb.Services.CustomerServic
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
 builder.Services.AddScoped<IPaymentsService, PaymentsService>();
+builder.Services.AddScoped<ISupplierOrderService, SupplierOrderService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 //add session to the application
 builder.Services.AddSession(options =>
