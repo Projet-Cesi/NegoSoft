@@ -2,20 +2,52 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
 using DotNetEnv;
-using NegoSoftShared.Models;
+using NegoSoftShared.Models.Entities;
+using NegoSoftWeb.Services.ProductService;
+using NegoSoftWeb.Services.CartService;
+using NegoSoftWeb.Services.CustomerService;
+using NegoSoftWeb.Services.AddressService;
+using NegoSoftWeb.Services.CustomerOrderService;
+using NegoSoftWeb.Services.PaymentsService;
+using NegoSoftWeb.Services.SupplierOrderService;
+using NegoSoftWeb.Services.SupplierService;
+using Stripe;
+using NegoSoftWeb.Models.Entities;
+
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<NegoSoftContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<NegoSoftContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IProductService, NegoSoftWeb.Services.ProductService.ProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICustomerService, NegoSoftWeb.Services.CustomerService.CustomerService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+builder.Services.AddScoped<IPaymentsService, PaymentsService>();
+builder.Services.AddScoped<ISupplierOrderService, SupplierOrderService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+
+//add session to the application
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // durée de la session
+    options.Cookie.HttpOnly = true; // le cookie de session ne peut pas être accédé par le client
+    options.Cookie.IsEssential = true; // le cookie de session est essentiel
+});
+builder.Services.AddHttpContextAccessor(); // pour accéder à la session dans les services
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 
@@ -36,6 +68,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession(); 
 
 app.UseAuthorization();
 

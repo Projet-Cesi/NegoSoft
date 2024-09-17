@@ -20,3 +20,56 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.product-page .card-img-top {
+    border-radius: 15px;
+    width: 100%;
+    height: auto;
+    max-height: 300px; /* Hauteur ajustée pour les images de produits */
+    object-fit: cover;
+}
+
+.card {
+    border-radius: 20px;
+    background-color: #f5f5f5; /* Couleur de fond de la carte (blanc cassé) */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce pour l'effet de surélévation */
+    color: #333; /* Couleur du texte */
+    transition: transform 0.3s;
+    height: 100%; /* Pour s'assurer que les cartes remplissent toute la hauteur disponible */
+}
+
+    .card:hover {
+        transform: scale(1.05); /* Légère mise à l'échelle au survol */
+    }
+
+.card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-primary {
+    border-radius: 50px;
+    width: 100%;
+    background-color: #28a745; /* Vert pour le bouton d'achat */
+    border: none;
+    padding: 10px 0;
+    color: white;
+    font-weight: bold;
+}
+
+    .btn-primary:hover {
+        background-color: #218838; /* Couleur de survol du bouton */
+    }
+
+h3, h5 {
+    color: #1e2d56; /* Couleur bleue foncée pour les titres */
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e74c3c; /* Rouge pour les prix */
+    margin-bottom: 15px;
+}

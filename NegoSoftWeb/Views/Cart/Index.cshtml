@@ -1,0 +1,48 @@
+﻿@using NegoSoftWeb.Models.Entities
+@model List<CartItem>
+
+<div class="container mt-5">
+    <h1>Your Cart</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th>Remove Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProName</td>
+                    <td>@item.ProQuantity</td>
+                    <td>@item.ProPrice $</td>
+                    <td>@Math.Round((item.ProQuantity * item.ProPrice), 2) €</td>
+                    <td>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="id" value="@item.ProId" />
+                            <div class="form-group">
+                                <label for="quantity">Quantity To Remove :</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="@item.ProQuantity" value="1" />
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4">
+                                <i class="fa fa-shopping-cart"></i> Remove
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-right">
+        <h3>Total: @Math.Round(Model.Sum(item => item.ProQuantity * item.ProPrice), 2) €</h3>
+    </div>
+    <div class="text-right mt-4">
+        <a asp-controller="Customer" asp-action="Create" class="btn btn-primary">
+            Suivant : Informations Client
+        </a>
+    </div>
+</div>
