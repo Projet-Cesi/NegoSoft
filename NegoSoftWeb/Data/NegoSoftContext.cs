@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftShared.Models.Entities;
+using NegoSoftWeb.Models.Entities;
 
 namespace NegoSoftWeb.Data
 {
-    public class NegoSoftContext : IdentityDbContext
+    public class NegoSoftContext : IdentityDbContext<User>
     {
         public NegoSoftContext(DbContextOptions<NegoSoftContext> options)
             : base(options)

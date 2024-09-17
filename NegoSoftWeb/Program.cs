@@ -17,6 +17,7 @@ using NegoSoftWeb.Models.Entities;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("NegoSoftContextConnection") ?? throw new InvalidOperationException("Connection string 'NegoSoftContextConnection' not found.");
 
 // Add services to the container.
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
@@ -39,11 +40,11 @@ builder.Services.AddScoped<ISupplierService, SupplierService>();
 //add session to the application
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // durée de la session
-    options.Cookie.HttpOnly = true; // le cookie de session ne peut pas être accédé par le client
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // durï¿½e de la session
+    options.Cookie.HttpOnly = true; // le cookie de session ne peut pas ï¿½tre accï¿½dï¿½ par le client
     options.Cookie.IsEssential = true; // le cookie de session est essentiel
 });
-builder.Services.AddHttpContextAccessor(); // pour accéder à la session dans les services
+builder.Services.AddHttpContextAccessor(); // pour accï¿½der ï¿½ la session dans les services
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
