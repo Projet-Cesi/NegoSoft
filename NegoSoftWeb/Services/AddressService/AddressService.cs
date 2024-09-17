@@ -37,6 +37,15 @@ namespace NegoSoftWeb.Services.AddressService
 
         public async Task<Address> AddAddressAsync(AddressViewModel address)
         {
+            var addressExists = await AddressExists(address);
+
+            // L'adresse existe déjà alors on la retourne
+            if (addressExists != null)
+            {
+                return addressExists;
+            }
+
+            // L'adresse n'existe pas alors on l'ajoute
             var newAddress = new Address
             {
                 AddId = Guid.NewGuid(),
@@ -54,9 +63,16 @@ namespace NegoSoftWeb.Services.AddressService
             return newAddress;
         }
 
-        public async Task<bool> AddressExists(Guid id)
+        public async Task<Address> AddressExists(AddressViewModel address)
         {
-            return await _context.Customers.AnyAsync(c => c.CusId == id);
+            return await _context.Addresses.FirstOrDefaultAsync(a => a.AddDeliveryStreet == address.AddDeliveryStreet &&
+                                            a.AddDeliveryCity == address.AddDeliveryCity &&
+                                            a.AddDeliveryZipCode == address.AddDeliveryZipCode &&
+                                            a.AddDeliveryCountry == address.AddDeliveryCountry &&
+                                            a.AddBillingStreet == address.AddBillingStreet &&
+                                            a.AddBillingCity == address.AddBillingCity &&
+                                            a.AddBillingZipCode == address.AddBillingZipCode &&
+                                            a.AddBillingCountry == address.AddBillingCountry);
         }
     }
 }

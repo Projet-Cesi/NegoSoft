@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NegoSoftWeb.Data;
 
@@ -11,9 +12,11 @@ using NegoSoftWeb.Data;
 namespace NegoSoftWeb.Data.Migrations
 {
     [DbContext(typeof(NegoSoftContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916160002_updateRelationBetweenCustomerOrderAndAddress")]
+    partial class updateRelationBetweenCustomerOrderAndAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,7 +528,8 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasKey("SoId");
 
-                    b.HasIndex("SoAddressId");
+                    b.HasIndex("SoAddressId")
+                        .IsUnique();
 
                     b.HasIndex("SoSupplierId");
 
@@ -724,8 +728,8 @@ namespace NegoSoftWeb.Data.Migrations
             modelBuilder.Entity("NegoSoftShared.Models.Entities.SupplierOrder", b =>
                 {
                     b.HasOne("NegoSoftShared.Models.Entities.Address", "Address")
-                        .WithMany("SupplierOrders")
-                        .HasForeignKey("SoAddressId")
+                        .WithOne("SupplierOrder")
+                        .HasForeignKey("NegoSoftShared.Models.Entities.SupplierOrder", "SoAddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -769,7 +773,8 @@ namespace NegoSoftWeb.Data.Migrations
                     b.Navigation("Supplier")
                         .IsRequired();
 
-                    b.Navigation("SupplierOrders");
+                    b.Navigation("SupplierOrder")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Customer", b =>

@@ -43,11 +43,6 @@ namespace NegoSoftWeb.Services.CartService
             var cart = await GetCartAsync();
             var cartItem = cart.FirstOrDefault(c => c.ProId == product.ProId);
 
-            if (quantity > product.ProStock)
-            {
-                throw new Exception("Quantité insuffisante en stock");
-            }
-
             if (cartItem == null)
             {
                 cart.Add(new CartItem

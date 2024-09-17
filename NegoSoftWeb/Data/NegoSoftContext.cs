@@ -22,6 +22,12 @@ namespace NegoSoftWeb.Data
         public DbSet<SupplierOrder> SupplierOrders { get; set; }
         public DbSet<SupplierOrderDetails> SupplierOrderDetails { get; set; }
 
+        //enable sensitive data logging
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -43,8 +49,8 @@ namespace NegoSoftWeb.Data
 
             modelBuilder.Entity<CustomerOrder>()
                 .HasOne(co => co.Address) // Une commande client est associée à une adresse
-                .WithOne(a => a.CustomerOrder) // Une adresse peut être associée à une commande client
-                .HasForeignKey<CustomerOrder>(co => co.CoAddressId) // La clé étrangère de l'adresse de la commande
+                .WithMany(a => a.CustomerOrders) // Une adresse peut être associée à plusieurs commandes client
+                .HasForeignKey(co => co.CoAddressId) // La clé étrangère de l'adresse de la commande
                 .OnDelete(DeleteBehavior.Restrict);  // Quand une adresse est supprimée, on ne supprime pas automatiquement les commandes associées
 
             // Configuration des relations pour SupplierOrder
@@ -56,8 +62,8 @@ namespace NegoSoftWeb.Data
 
             modelBuilder.Entity<SupplierOrder>()
                 .HasOne(so => so.Address) // Une commande fournisseur est associée à une adresse
-                .WithOne(a => a.SupplierOrder) // Une adresse peut être associée à une commande fournisseur
-                .HasForeignKey<SupplierOrder>(so => so.SoAddressId) // La clé étrangère de l'adresse de la commande
+                .WithMany(a => a.SupplierOrders) // Une adresse peut être associée à plusieurs commandes fournisseur
+                .HasForeignKey(so => so.SoAddressId) // La clé étrangère de l'adresse de la commande
                 .OnDelete(DeleteBehavior.Restrict);  // Quand une adresse est supprimée, on ne supprime pas automatiquement les commandes associées
 
             // Configuration des relations pour Product

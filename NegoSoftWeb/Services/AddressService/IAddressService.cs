@@ -10,6 +10,6 @@ namespace NegoSoftWeb.Services.AddressService
         void SaveAddress(AddressViewModel address);
         Task<Address> GetAddressByIdAsync(Guid id);
         Task<Address> AddAddressAsync(AddressViewModel address);
-        Task<bool> AddressExists(Guid id);
+        Task<Address> AddressExists(AddressViewModel address);
     }
 }

@@ -5,6 +5,6 @@ namespace NegoSoftWeb.Services.CustomerOrderService
 {
     public interface ICustomerOrderService
     {
-        public Task<CustomerOrder> CreateOrderAsync();
+        public Task<CustomerOrder> CreateCustomerOrderAsync();
     }
 }
