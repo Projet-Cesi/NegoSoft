@@ -9,7 +9,7 @@ using System;
 
 namespace NegoSoftWeb.Data.Migrations
 {
-    [DbContext(typeof(NegoSoftContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
