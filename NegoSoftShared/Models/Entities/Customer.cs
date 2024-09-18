@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection.Metadata;
-using NegoSoftWeb.Models.Entities;
 
 namespace NegoSoftShared.Models.Entities
 {
@@ -42,8 +41,6 @@ namespace NegoSoftShared.Models.Entities
         public string CusUserId { get; set; }
 
         // Propriétés de navigation de la classe permettant de naviguer entre les différentes classes (voir cours sur les relations entre les classes)
-
-        public User User { get; set; }
 
         public Address DefaultAddress { get; set; }
         public ICollection<CustomerOrder> CustomerOrders { get; set; }

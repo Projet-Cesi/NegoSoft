@@ -17,7 +17,6 @@ using NegoSoftWeb.Models.Entities;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("NegoSoftContextConnection") ?? throw new InvalidOperationException("Connection string 'NegoSoftContextConnection' not found.");
 
 // Add services to the container.
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
@@ -25,7 +24,7 @@ builder.Services.AddDbContext<NegoSoftContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<NegoSoftContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, NegoSoftWeb.Services.ProductService.ProductService>();
@@ -70,8 +69,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession(); 
+app.UseSession();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<NegoSoftShared.Models.Entities.CustomerOrder>
+
+@{
+    ViewData["Title"] = "Historique des Commandes";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Commande</th>
+            <th>Date</th>
+            <th>État</th>
+            <th>Total</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.CoId</td>
+                <td>@order.CoDate.ToString("dd/MM/yyyy")</td>
+                <td>@order.CoState</td>
+                <td>@order.CoTotal.ToString("F2") €</td>
+                <td>
+                    <a href="@Url.Action("Details", "Order", new { id = order.CoId })" class="btn btn-info">Voir Détails</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

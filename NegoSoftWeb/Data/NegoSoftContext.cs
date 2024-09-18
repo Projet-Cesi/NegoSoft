@@ -118,7 +118,12 @@ namespace NegoSoftWeb.Data
                 .WithOne(a => a.Supplier) // Une adresse est associée à un fournisseur
                 .HasForeignKey<Supplier>(s => s.SupDefaultAddressId) // La clé étrangère de l'adresse par défaut du fournisseur
                 .OnDelete(DeleteBehavior.Restrict); // Quand un fournisseur est supprimé, on ne supprime pas automatiquement son adresse par défaut
-             
+
+            modelBuilder.Entity<Customer>()
+                .HasOne<User>() // Un Customer a un User
+                .WithMany() //  Un User peut être associé à plusieurs Customer
+                .HasForeignKey(c => c.CusUserId); // Clé étrangère dans Customer
+
         }
     }
 }

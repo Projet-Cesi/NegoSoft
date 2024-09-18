@@ -23,6 +23,8 @@ namespace NegoSoftWeb.Controllers
         }
 
         // GET: Product
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -30,6 +32,8 @@ namespace NegoSoftWeb.Controllers
         }
 
         // GET: Product/Details/5
+
+        [HttpGet]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,6 +50,7 @@ namespace NegoSoftWeb.Controllers
             return View(product);
         }
 
+        // A supprimer car gérer plus tard dans le client lourd
         // GET: Product/Create
         public IActionResult Create()
         {
@@ -54,6 +59,7 @@ namespace NegoSoftWeb.Controllers
             return View();
         }
 
+        // A supprimer car gérer plus tard dans le client lourd
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,6 +82,9 @@ namespace NegoSoftWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+        // A supprimer car gérer plus tard dans le client lourd
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -94,6 +103,8 @@ namespace NegoSoftWeb.Controllers
             return View(product);
         }
 
+
+        // A supprimer car gérer plus tard dans le client lourd
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -125,6 +136,8 @@ namespace NegoSoftWeb.Controllers
             return RedirectToAction(nameof(Index)); 
         }
 
+
+        // A supprimer car gérer plus tard dans le client lourd
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -142,6 +155,8 @@ namespace NegoSoftWeb.Controllers
             return View(product);
         }
 
+
+        // A supprimer car gérer plus tard dans le client lourd
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -151,6 +166,8 @@ namespace NegoSoftWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        [HttpGet]
         // GET: Product/Search
         public async Task<IActionResult> Search(string searchString, Guid? typeId)
         {

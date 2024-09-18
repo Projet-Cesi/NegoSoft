@@ -5,6 +5,7 @@ using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Data;
 using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Services.CustomerOrderService;
+using Microsoft.EntityFrameworkCore;
 
 namespace NegoSoftWeb.Services.CustomerOrderService
 {
@@ -75,6 +76,14 @@ namespace NegoSoftWeb.Services.CustomerOrderService
             await _context.SaveChangesAsync();
 
             return order;
+        }
+
+        public async Task<IEnumerable<CustomerOrder>> GetOrderHistoryByUserAsync(string userId)
+        {
+            return await _context.CustomerOrders
+                .Include(co => co.CustomerOrderDetails)
+                .Where(co => co.Customer.CusUserId == userId)
+                .ToListAsync();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace NegoSoftWeb.Controllers
         }
 
         // Action pour retirer un produit du panier
+        [HttpPost]
         public async Task<IActionResult> RemoveFromCart(Guid id, int quantity)
         {
             await _cartService.RemoveFromCartAsync(id, quantity);
