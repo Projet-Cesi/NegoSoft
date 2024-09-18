@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Services.AddressService;
 
@@ -14,6 +15,9 @@ namespace NegoSoftWeb.Controllers
         }
 
         // GET: Address/OrderAddress
+
+        [Authorize]
+        [HttpGet]
         public IActionResult OrderAddress()
         {
             return View();

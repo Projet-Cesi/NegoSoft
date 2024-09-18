@@ -9,6 +9,7 @@ using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Services.CustomerOrderService;
 using NegoSoftWeb.Services.PaymentsService;
 using Stripe.Climate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NegoSoftWeb.Controllers
 {
@@ -27,11 +28,17 @@ namespace NegoSoftWeb.Controllers
             _paymentsService = paymentsService;
         }
 
+        // GET: Payments
+
+        [Authorize]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        // POST: Payments/CreateCheckoutSession
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateCheckoutSession()
         {
@@ -46,6 +53,9 @@ namespace NegoSoftWeb.Controllers
             }
         }
 
+        // GET: Payments/Success
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> SuccessAsync()
         {
             try
@@ -59,6 +69,9 @@ namespace NegoSoftWeb.Controllers
             }
         }
 
+        // GET: Payments/Cancel
+        [Authorize]
+        [HttpGet]
         public IActionResult Cancel()
         {
             return View();

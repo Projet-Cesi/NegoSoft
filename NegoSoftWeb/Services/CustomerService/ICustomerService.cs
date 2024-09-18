@@ -11,7 +11,7 @@ namespace NegoSoftWeb.Services.CustomerService
         Task<Customer> GetCustomerByIdAsync(Guid id);
         Task<Customer> AddCustomerAsync(CustomerViewModel customer);
         Task UpdateCustomerAsync(Customer customer);
-        Task<Customer> CustomerExists(CustomerViewModel customer);
+        Task<Customer> CustomerExists(CustomerViewModel customer, string userId);
 
     }
 }

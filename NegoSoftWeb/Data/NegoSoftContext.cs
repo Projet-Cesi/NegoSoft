@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftShared.Models.Entities;
+using NegoSoftWeb.Models.Entities;
 
 namespace NegoSoftWeb.Data
 {
-    public class NegoSoftContext : IdentityDbContext
+    public class NegoSoftContext : IdentityDbContext<User>
     {
         public NegoSoftContext(DbContextOptions<NegoSoftContext> options)
             : base(options)
@@ -117,7 +118,12 @@ namespace NegoSoftWeb.Data
                 .WithOne(a => a.Supplier) // Une adresse est associée à un fournisseur
                 .HasForeignKey<Supplier>(s => s.SupDefaultAddressId) // La clé étrangère de l'adresse par défaut du fournisseur
                 .OnDelete(DeleteBehavior.Restrict); // Quand un fournisseur est supprimé, on ne supprime pas automatiquement son adresse par défaut
-             
+
+            modelBuilder.Entity<Customer>()
+                .HasOne<User>() // Un Customer a un User
+                .WithMany() //  Un User peut être associé à plusieurs Customer
+                .HasForeignKey(c => c.CusUserId); // Clé étrangère dans Customer
+
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Models.Entities;
 using NegoSoftWeb.Models.Extensions;
+using System.Security.Claims;
 
 namespace NegoSoftWeb.Services.CustomerService
 {
@@ -38,7 +39,8 @@ namespace NegoSoftWeb.Services.CustomerService
 
         public async Task<Customer> AddCustomerAsync(CustomerViewModel customer)
         {
-            var customerExists = await CustomerExists(customer);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var customerExists = await CustomerExists(customer, userId);
 
             // Le client existe déjà alors on le retourne
             if (customerExists != null)
@@ -53,7 +55,8 @@ namespace NegoSoftWeb.Services.CustomerService
                 CusFirstName = customer.CusFirstName,
                 CusLastName = customer.CusLastName,
                 CusEmail = customer.CusEmail,
-                CusPhone = customer.CusPhone
+                CusPhone = customer.CusPhone,
+                CusUserId = userId
             };
 
             await _context.Customers.AddAsync(newCustomer);
@@ -77,12 +80,13 @@ namespace NegoSoftWeb.Services.CustomerService
             }
         }
 
-        public async Task<Customer> CustomerExists(CustomerViewModel customer)
+        public async Task<Customer> CustomerExists(CustomerViewModel customer, string userId)
         {
             return await _context.Customers
              .FirstOrDefaultAsync(c => c.CusEmail == customer.CusEmail &&
                                  c.CusFirstName == customer.CusFirstName &&
-                                 c.CusLastName == customer.CusLastName);
+                                 c.CusLastName == customer.CusLastName &&
+                                 c.CusUserId == userId);
         }
     }
 }
