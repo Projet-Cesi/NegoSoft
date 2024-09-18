@@ -1,4 +1,5 @@
-﻿@using NegoSoftWeb.Models.ViewModels
+﻿@using NegoSoftWeb.Models.Entities
+@using NegoSoftWeb.Models.ViewModels
 @model ProductSearchViewModel
 
 <div class="container py-5" product-page>
@@ -7,16 +8,44 @@
     <form method="get" asp-controller="Product" asp-action="Search">
         <!-- On prend la valeur de la recherche pour la renvoyer de nouveau avec les filtres -->
         <input type="hidden" name="searchString" value="@Context.Request.Query["searchString"]" />
+
         <select name="typeId" onchange="this.form.submit()" class="form-control">
             <option value="">Tous les types</option>
             @foreach (var type in Model.ProductTypes)
             {
                 var selectedAttribute = Model.SelectedTypeId == type.TypId ? "selected" : "";
-                <!-- On génère une balise html contenant l'attribut value et selected si nécessaire (en passant par des expressions razor cela ne passait pas) -->
                 @Html.Raw($"<option value='{type.TypId}' {selectedAttribute}>{type.TypLibelle}</option>")
             }
         </select>
+        <select name="supplierId" onchange="this.form.submit()" class="form-control">
+            <option value="">Tous les fournisseurs</option>
+            @foreach (var supplier in Model.ProductSuppliers)
+            {
+                var selectedAttribute = Model.SelectedSupplierId == supplier.SupId ? "selected" : "";
+                @Html.Raw($"<option value='{supplier.SupId}' {selectedAttribute}>{supplier.SupName}</option>")
+            }
+        </select>
+        <select name="alcoholProductId" onchange="this.form.submit()" class="form-control">
+            <option value="">Toutes les Années</option>
+            @foreach (var year in Model.AlcoholProducts)
+            {
+                var selectedAttribute = Model.SelectedAlcoholProductId == year.ApId ? "selected" : "";
+                @Html.Raw($"<option value='{year.ApId}' {selectedAttribute}>{year.ApYear}</option>")
+            }
+        </select>
+
+        <!-- Champ de sélection pour le tri -->
+        <select name="sortOrder" onchange="this.form.submit()" class="form-control">
+            <option value="">Aucun Tri</option>
+            @foreach (var sortOrder in Enum.GetValues(typeof(SortOrder)).Cast<SortOrder>())
+            {
+                var selectedAttribute = Model.SelectedSortOrder == sortOrder ? "selected" : "";
+                var sortOrderValue = sortOrder.ToString();
+                @Html.Raw($"<option value='{sortOrderValue}' {selectedAttribute}>{sortOrderValue.Replace("Asc", " (Ascendant)").Replace("Desc", " (Descendant)").Replace("Name", "Nom").Replace("Price", "Prix")}</option>")
+            }
+        </select>
     </form>
+
     <div class="row">
         @foreach (var product in Model.Products)
         {
