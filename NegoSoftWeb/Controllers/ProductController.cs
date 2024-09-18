@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Data;
 using NegoSoftWeb.Models.ViewModels;
+using NegoSoftWeb.Models.Entities;
 using NegoSoftWeb.Services.ProductService;
 
 namespace NegoSoftWeb.Controllers
@@ -169,30 +171,10 @@ namespace NegoSoftWeb.Controllers
 
         [HttpGet]
         // GET: Product/Search
-        public async Task<IActionResult> Search(string searchString, Guid? typeId)
+        public async Task<IActionResult> Search(string searchString, Guid? typeId, Guid? supplierId, Guid? alcoholProductId, SortOrder sortOrder = SortOrder.None)
         {
         
-            var products = await _productService.GetAllProductsAsync();
-
-            //controle de la recherche
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                products = products.Where(p => p.ProName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            //on filtre par type de produit si un type est selectionné
-            if (typeId.HasValue)
-            {
-                products = products.Where(p => p.ProTypeId == typeId.Value).ToList();
-            }
-
-            //instanciation du model à passer à la vue contenant les produits filtrés et les types de produits
-            var model = new ProductSearchViewModel
-            {
-                Products = products,
-                ProductTypes = await _context.Types.ToListAsync(),
-                SelectedTypeId = typeId
-            };
+            var model = await _productService.SearchAsync(searchString, typeId, supplierId, alcoholProductId, sortOrder); 
 
             return View(model);
         }

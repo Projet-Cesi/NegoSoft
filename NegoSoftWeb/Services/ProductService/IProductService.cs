@@ -1,4 +1,5 @@
-﻿using NegoSoftShared.Models.Entities;
+﻿using NegoSoftWeb.Models.Entities;
+using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Models.ViewModels;
 
 namespace NegoSoftWeb.Services.ProductService
@@ -12,5 +13,6 @@ namespace NegoSoftWeb.Services.ProductService
         Task<Product> DeleteProductAsync(Guid id);
         Task<bool> ProductExistsAsync(Guid id);
         Task<String> UploadFile(ProductViewModel product);
+        Task<ProductSearchViewModel> SearchAsync(string searchString, Guid? typeId, Guid? supplierId, Guid? alcoholProductId, SortOrder sortOrder);
     }
 }
