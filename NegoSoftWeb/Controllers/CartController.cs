@@ -43,5 +43,13 @@ namespace NegoSoftWeb.Controllers
             await _cartService.RemoveFromCartAsync(id, quantity);
             return RedirectToAction("Index");
         }
+
+        // Action pour vider le panier
+        [HttpPost]
+        public async Task<IActionResult> ClearCart()
+        {
+            await _cartService.ClearCartAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
