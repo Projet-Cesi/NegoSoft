@@ -85,5 +85,13 @@ namespace NegoSoftWeb.Services.CustomerOrderService
                 .Where(co => co.Customer.CusUserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<CustomerOrderDetails>> GetOrderDetailsAsync(Guid orderId)
+        {
+            return await _context.CustomerOrderDetails
+                .Include(cod => cod.Product)
+                .Where(cod => cod.CodOrderId == orderId)
+                .ToListAsync();
+        }
     }
 }

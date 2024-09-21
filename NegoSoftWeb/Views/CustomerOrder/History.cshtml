@@ -25,7 +25,7 @@
                 <td>@order.CoState</td>
                 <td>@order.CoTotal.ToString("F2") €</td>
                 <td>
-                    <a href="@Url.Action("Details", "Order", new { id = order.CoId })" class="btn btn-info">Voir Détails</a>
+                    <a asp-controller="CustomerOrder" asp-action="Details" asp-route-orderId="@order.CoId" class="btn btn-info">Voir les détails</a>
                 </td>
             </tr>
         }

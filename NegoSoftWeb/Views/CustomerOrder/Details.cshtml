@@ -1,0 +1,29 @@
+﻿@model IEnumerable<NegoSoftShared.Models.Entities.CustomerOrderDetails>
+
+<h2>Détails de la commande</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Prix Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product.ProName</td>
+                <td>@item.CodQuantity</td>
+                <td>@item.Product.ProPrice</td>
+                <td>@item.CodPrice.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-right">
+    <a asp-controller="CustomerOrder" asp-action="History" class="btn btn-primary">Retour aux commandes</a>
+</div>
