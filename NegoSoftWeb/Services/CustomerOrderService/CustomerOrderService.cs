@@ -5,6 +5,7 @@ using NegoSoftWeb.Services.CustomerService;
 using NegoSoftWeb.Data;
 using NegoSoftShared.Models.Entities;
 using NegoSoftWeb.Services.CustomerOrderService;
+using Microsoft.EntityFrameworkCore;
 
 namespace NegoSoftWeb.Services.CustomerOrderService
 {
@@ -39,8 +40,6 @@ namespace NegoSoftWeb.Services.CustomerOrderService
 
             var newAddress = await _addressService.AddAddressAsync(address);
             var newCustomer = await _customerService.AddCustomerAsync(customer);
-            Console.WriteLine(newCustomer.CusId);
-            Console.WriteLine(newAddress.AddId);
 
             var order = new CustomerOrder
             {
@@ -77,6 +76,22 @@ namespace NegoSoftWeb.Services.CustomerOrderService
             await _context.SaveChangesAsync();
 
             return order;
+        }
+
+        public async Task<IEnumerable<CustomerOrder>> GetOrderHistoryByUserAsync(string userId)
+        {
+            return await _context.CustomerOrders
+                .Include(co => co.CustomerOrderDetails)
+                .Where(co => co.Customer.CusUserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<CustomerOrderDetails>> GetOrderDetailsAsync(Guid orderId)
+        {
+            return await _context.CustomerOrderDetails
+                .Include(cod => cod.Product)
+                .Where(cod => cod.CodOrderId == orderId)
+                .ToListAsync();
         }
     }
 }

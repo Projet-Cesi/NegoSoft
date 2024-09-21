@@ -5,6 +5,7 @@ using NegoSoftWeb.Services.CustomerService;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Models.ViewModels;
 using NegoSoftWeb.Models.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NegoSoftWeb.Controllers 
 { 
@@ -17,13 +18,17 @@ namespace NegoSoftWeb.Controllers
             _customerService = customerService;
         }
 
+        [Authorize]
+        [HttpGet]
         // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
+
         // POST: Customers/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CustomerViewModel customer)
@@ -43,6 +48,7 @@ namespace NegoSoftWeb.Controllers
 
         // POST: Customers/SetDefaultAdress/{CusId}
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetDefaultAdress(Guid CusId, Guid AddId)
