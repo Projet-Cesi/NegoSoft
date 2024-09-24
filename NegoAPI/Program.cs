@@ -1,6 +1,7 @@
 using NegoAPI.Services.ProductService;
 using NegoAPI.Services.SupplierService;
 using NegoAPI.Services.TypeService;
+using NegoAPI.Services.CustomerService;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
 using DotNetEnv;
@@ -29,6 +30,7 @@ builder.Services.AddDbContext<NegoSoftContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ITypeService, TypeService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 
 var app = builder.Build();
