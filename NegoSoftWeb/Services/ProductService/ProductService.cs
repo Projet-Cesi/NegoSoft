@@ -48,7 +48,6 @@ namespace NegoSoftWeb.Services.ProductService
 
         public async Task<Product> UpdateProductAsync(Product product)
         {
-            Console.WriteLine(product.ProStock);
             _context.Update(product);
             await _context.SaveChangesAsync();
             return product;

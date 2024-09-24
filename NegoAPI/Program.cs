@@ -1,23 +1,35 @@
 using NegoAPI.Services.ProductService;
+using NegoAPI.Services.SupplierService;
+using NegoAPI.Services.TypeService;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
+using DotNetEnv;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //prendre exemple sur NegoSoftWeb/Program.cs pour la configuration de la base de données
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+Env.Load();
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<NegoSoftContext>(options =>
     options.UseSqlServer(connectionString));
 
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<ITypeService, TypeService>();
+
 
 var app = builder.Build();
 
@@ -29,7 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
