@@ -5,6 +5,7 @@ using NegoAPI.Services.CustomerService;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
 using DotNetEnv;
+using NegoAPI.Services.AlcoholProductService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ITypeService, TypeService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAlcoholProductService, AlcoholProductService>();
 
 
 var app = builder.Build();

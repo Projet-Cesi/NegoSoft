@@ -67,8 +67,14 @@ namespace NegoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteType(Guid id)
         {
-            var result = await _typeService.DeleteTypeAsync(id);
-            if (result == null) return NotFound();
+            try
+            {
+                await _typeService.DeleteTypeAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
         }
     }

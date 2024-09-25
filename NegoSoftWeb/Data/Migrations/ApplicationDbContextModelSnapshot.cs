@@ -208,7 +208,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasKey("AddId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.AlcoholProduct", b =>
@@ -235,7 +235,7 @@ namespace NegoSoftWeb.Data.Migrations
                     b.HasIndex("ProTypeId")
                         .IsUnique();
 
-                    b.ToTable("AlcoholProducts");
+                    b.ToTable("AlcoholProducts", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Customer", b =>
@@ -282,7 +282,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("CusUserId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.CustomerOrder", b =>
@@ -319,7 +319,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("CoCustomerId");
 
-                    b.ToTable("CustomerOrders");
+                    b.ToTable("CustomerOrders", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.CustomerOrderDetails", b =>
@@ -351,7 +351,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("CodProductId");
 
-                    b.ToTable("CustomerOrderDetails");
+                    b.ToTable("CustomerOrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Product", b =>
@@ -401,7 +401,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("ProTypeId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Supplier", b =>
@@ -433,7 +433,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("SupDefaultAddressId");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.SupplierOrder", b =>
@@ -470,7 +470,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("SoSupplierId");
 
-                    b.ToTable("SupplierOrders");
+                    b.ToTable("SupplierOrders", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.SupplierOrderDetails", b =>
@@ -502,7 +502,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasIndex("SodProductId");
 
-                    b.ToTable("SupplierOrderDetails");
+                    b.ToTable("SupplierOrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftShared.Models.Entities.Type", b =>
@@ -519,7 +519,7 @@ namespace NegoSoftWeb.Data.Migrations
 
                     b.HasKey("TypId");
 
-                    b.ToTable("Types");
+                    b.ToTable("Types", (string)null);
                 });
 
             modelBuilder.Entity("NegoSoftWeb.Models.Entities.User", b =>
