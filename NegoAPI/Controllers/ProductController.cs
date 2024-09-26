@@ -7,8 +7,6 @@ using NegoSoftShared.Models.ViewModels;
 
 namespace NegoAPI.Controllers
 {
-
-
     [ApiController]
     [Route("api/[controller]")]
 
@@ -21,6 +19,7 @@ namespace NegoAPI.Controllers
             _productService = productService;
         }
 
+        // GET: api/Products
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {
