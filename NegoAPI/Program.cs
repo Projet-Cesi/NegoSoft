@@ -10,6 +10,7 @@ using NegoAPI.Services.SupplierOrderDetailsService;
 using NegoAPI.Services.SupplierOrderService;
 using NegoAPI.Services.CustomerOrderDetailsService;
 using NegoAPI.Services.CustomerOrderService;
+using NegoAPI.Services.AddressService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,7 @@ builder.Services.AddScoped<ISupplierOrderDetailsService, SupplierOrderDetailsSer
 builder.Services.AddScoped<ISupplierOrderService, SupplierOrderService>();
 builder.Services.AddScoped<ICustomerOrderDetailsService, CustomerOrderDetailsService>();
 builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 
 var app = builder.Build();
