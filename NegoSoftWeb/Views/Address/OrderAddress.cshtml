@@ -54,7 +54,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
+    document.querySelector('#checkout-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         const response = await fetch('/Payments/CreateCheckoutSession', {
             method: 'POST',

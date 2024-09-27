@@ -1,9 +1,16 @@
 using NegoAPI.Services.ProductService;
 using NegoAPI.Services.SupplierService;
 using NegoAPI.Services.TypeService;
+using NegoAPI.Services.CustomerService;
 using Microsoft.EntityFrameworkCore;
 using NegoSoftWeb.Data;
 using DotNetEnv;
+using NegoAPI.Services.AlcoholProductService;
+using NegoAPI.Services.SupplierOrderDetailsService;
+using NegoAPI.Services.SupplierOrderService;
+using NegoAPI.Services.CustomerOrderDetailsService;
+using NegoAPI.Services.CustomerOrderService;
+using NegoAPI.Services.AddressService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +36,13 @@ builder.Services.AddDbContext<NegoSoftContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ITypeService, TypeService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAlcoholProductService, AlcoholProductService>();
+builder.Services.AddScoped<ISupplierOrderDetailsService, SupplierOrderDetailsService>();
+builder.Services.AddScoped<ISupplierOrderService, SupplierOrderService>();
+builder.Services.AddScoped<ICustomerOrderDetailsService, CustomerOrderDetailsService>();
+builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 
 var app = builder.Build();

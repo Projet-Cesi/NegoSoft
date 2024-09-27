@@ -68,7 +68,7 @@ namespace NegoAPI.Services.TypeService
 
         public async Task<Type> DeleteTypeAsync(Guid id)
         {
-            var type = await _context.Types.FindAsync(id);
+            var type = await GetTypeByIdAsync(id);
             if (type != null)
             {
                 _context.Types.Remove(type);
