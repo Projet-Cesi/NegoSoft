@@ -48,7 +48,7 @@ namespace NegoAPI.Services.ProductService
 
         public async Task<Product> DeleteProductAsync(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await GetProductByIdAsync(id);
             if (product != null)
             {
                 _context.Products.Remove(product);
