@@ -23,4 +23,11 @@
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\uploads\ac8f3c9f-94e6-4c9e-b3e2-a5e4da591c06_image_2024-09-24_155136196.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
