@@ -16,4 +16,8 @@
     <ProjectReference Include="..\NegoSoftShared\NegoSoftShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="WPFViews\" />
+  </ItemGroup>
+
 </Project>
