@@ -27,7 +27,6 @@ namespace NegoAPI.Services.CustomerService
                 CusFirstName = customer.CusFirstName,
                 CusEmail = customer.CusEmail,
                 CusPhone = customer.CusPhone,
-                CusDefaultAddressId = customer.CusDefaultAddressId,
                 CusUserId = customer.CusUserId
             };
             _context.Customers.Add(newCustomer);
@@ -66,7 +65,6 @@ namespace NegoAPI.Services.CustomerService
                 existingCustomer.CusFirstName = customer.CusFirstName;
                 existingCustomer.CusEmail = customer.CusEmail;
                 existingCustomer.CusPhone = customer.CusPhone;
-                existingCustomer.CusDefaultAddressId = customer.CusDefaultAddressId;
                 existingCustomer.CusUserId = customer.CusUserId;
                 await _context.SaveChangesAsync();
                 return existingCustomer;
