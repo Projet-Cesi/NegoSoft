@@ -71,33 +71,33 @@ namespace NegoSoftWeb.Services.ProductService
 
         public async Task<String> UploadFile(ProductViewModel product)
         {
-            if (product.ProImageFile != null)
-            {
-                // Get the path to the wwwroot folder
-                string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                Console.WriteLine(uploadFolder);
+            //if (product.ProImageFile != null)
+            //{
+            //    // Get the path to the wwwroot folder
+            //    string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+            //    Console.WriteLine(uploadFolder);
 
-                // Create the folder if it doesn't exist
-                if (!Directory.Exists(uploadFolder))
-                {
-                    Directory.CreateDirectory(uploadFolder);
-                }
+            //    // Create the folder if it doesn't exist
+            //    if (!Directory.Exists(uploadFolder))
+            //    {
+            //        Directory.CreateDirectory(uploadFolder);
+            //    }
 
-                // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + product.ProImageFile.FileName;
+            //    // Generate a unique file name
+            //    string uniqueFileName = Guid.NewGuid().ToString() + "_" + product.ProImageFile.FileName;
 
-                // Combine the folder path and the file name
-                string filePath = Path.Combine(uploadFolder, uniqueFileName);
+            //    // Combine the folder path and the file name
+            //    string filePath = Path.Combine(uploadFolder, uniqueFileName);
 
-                // Sauvegarde le fichier sur le serveur
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await product.ProImageFile.CopyToAsync(fileStream);
-                }
+            //    // Sauvegarde le fichier sur le serveur
+            //    using (var fileStream = new FileStream(filePath, FileMode.Create))
+            //    {
+            //        await product.ProImageFile.CopyToAsync(fileStream);
+            //    }
 
-                product.ProPictureName = uniqueFileName;
+            //    product.ProPictureName = uniqueFileName;
 
-            }
+            //}
             return product.ProPictureName;
 
         }

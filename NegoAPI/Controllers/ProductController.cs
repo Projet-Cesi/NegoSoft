@@ -49,7 +49,7 @@ namespace NegoAPI.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct(NegoSoftWeb.Models.ViewModels.ProductViewModel product)
+        public async Task<ActionResult<Product>> CreateProduct([FromBody]NegoSoftWeb.Models.ViewModels.ProductViewModel product)
         {
             product.ProPictureName = await _productService.UploadFile(product);
             var newProduct = new Product

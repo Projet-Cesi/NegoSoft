@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NegoSoftShared.Models.Entities;
+using NegoSoftWPF.WPFViews;
 using Newtonsoft.Json;
 namespace NegoSoftWPF
 {
@@ -46,22 +47,15 @@ namespace NegoSoftWPF
         {
             try
             {
-                apiUrl = "https://localhost:7101/api/product"; // Replace with your API URL
-
-                // Use HttpClient to make the API call
+                apiUrl = "https://localhost:7101/api/product";
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        // Read the response as a string
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the JSON response into a List of objects
                         List<Product> data = JsonConvert.DeserializeObject<List<Product>>(jsonResponse);
-
-                        // Bind the data to the DataGrid
                         dataTab.ItemsSource = data;
                         dataGridType = typeof(Product);
                     }
@@ -81,22 +75,15 @@ namespace NegoSoftWPF
         {
             try
             {
-                apiUrl = "https://localhost:7101/api/Supplier"; // Replace with your API URL
-
-                // Use HttpClient to make the API call
+                apiUrl = "https://localhost:7101/api/Supplier";
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        // Read the response as a string
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the JSON response into a List of objects
                         List<Supplier> data = JsonConvert.DeserializeObject<List<Supplier>>(jsonResponse);
-
-                        // Bind the data to the DataGrid
                         dataTab.ItemsSource = data;
                         dataGridType = typeof(Supplier);
                     }
@@ -115,22 +102,15 @@ namespace NegoSoftWPF
         {
             try
             {
-                apiUrl = "https://localhost:7101/api/Customer"; // Replace with your API URL
-
-                // Use HttpClient to make the API call
+                apiUrl = "https://localhost:7101/api/Customer";
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        // Read the response as a string
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the JSON response into a List of objects
                         List<Customer> data = JsonConvert.DeserializeObject<List<Customer>>(jsonResponse);
-
-                        // Bind the data to the DataGrid
                         dataTab.ItemsSource = data;
                         dataGridType = typeof(Customer);
                     }
@@ -149,22 +129,15 @@ namespace NegoSoftWPF
         {
             try
             {
-                apiUrl = "https://localhost:7101/api/CustomerOrder"; // Replace with your API URL
-
-                // Use HttpClient to make the API call
+                apiUrl = "https://localhost:7101/api/CustomerOrder";
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        // Read the response as a string
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the JSON response into a List of objects
                         List<CustomerOrder> data = JsonConvert.DeserializeObject<List<CustomerOrder>>(jsonResponse);
-
-                        // Bind the data to the DataGrid
                         dataTab.ItemsSource = data;
                         dataGridType = typeof(CustomerOrder);
                     }
@@ -190,7 +163,8 @@ namespace NegoSoftWPF
         }
         private void Button_ClickCreate(object sender, RoutedEventArgs e)
         {
-
+            CreateProduct createProduct = new CreateProduct();
+            createProduct.ShowDialog();
         }
         private void Button_ClickRefresh(object sender, RoutedEventArgs e)
         {
