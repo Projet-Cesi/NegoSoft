@@ -34,13 +34,6 @@ namespace NegoSoftWeb.Data
             base.OnModelCreating(modelBuilder);
             // Configuration des relations des tables de la base de données
 
-            // Configuration des relations pour Customer
-            modelBuilder.Entity<Customer>()
-                .HasOne(c => c.DefaultAddress) // Un client a une adresse par défaut
-                .WithOne(a => a.Customer) // Une adresse est associée à un client
-                .HasForeignKey<Customer>(c => c.CusDefaultAddressId) // La clé étrangère de l'adresse par défaut du client
-                .OnDelete(DeleteBehavior.Restrict);  // Pas d'action automatique lors de la suppression
-
             // Configuration des relations pour CustomerOrder
             modelBuilder.Entity<CustomerOrder>()
                 .HasOne(co => co.Customer) // Une commande client est associée à un client
@@ -119,6 +112,7 @@ namespace NegoSoftWeb.Data
                 .HasForeignKey(s => s.SupDefaultAddressId) // La clé étrangère de l'adresse par défaut du fournisseur
                 .OnDelete(DeleteBehavior.Restrict); // Quand un fournisseur est supprimé, on ne supprime pas automatiquement son adresse par défaut
 
+            // Configuration des relations pour Customer
             modelBuilder.Entity<Customer>()
                 .HasOne<User>() // Un Customer a un User
                 .WithMany() //  Un User peut être associé à plusieurs Customer
