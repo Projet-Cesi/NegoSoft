@@ -22,6 +22,7 @@ namespace NegoSoftWPF
         //Attributs
         private string apiUrl;
         private System.Type dataGridType;
+        private System.Object selectedItem;
         public MainWindow()
         {
             InitializeComponent();
@@ -172,11 +173,12 @@ namespace NegoSoftWPF
                     MessageBox.Show("create customer");
                     break;
                 case System.Type t when t == typeof(Supplier):
-                    MessageBox.Show("create Supplier");
+                    CreateSupplier createSupplier = new CreateSupplier();
+                    bool? resultSupp = createSupplier.ShowDialog();
                     break;
                 case System.Type t when t == typeof(Product):
                     CreateProduct createProduct = new CreateProduct();
-                    bool? result = createProduct.ShowDialog();
+                    bool? resultProd = createProduct.ShowDialog();
                     break;
             }
             refreshDataGrid();
@@ -209,12 +211,133 @@ namespace NegoSoftWPF
         {
 
         }
-        private void Button_ClickDelete(object sender, RoutedEventArgs e)
+        private async void Button_ClickDelete(object sender, RoutedEventArgs e)
         {
-
+            switch (dataGridType)
+            {
+                case System.Type t when t == typeof(CustomerOrder):
+                    LoadOrdersFromApi();
+                    break;
+                case System.Type t when t == typeof(Customer):
+                    await DeleteCustomer();
+                    break;
+                case System.Type t when t == typeof(Supplier):
+                    await DeleteSupplier(); ;
+                    break;
+                case System.Type t when t == typeof(Product):
+                    await DeleteProduct();
+                    break;
+            }
+            refreshDataGrid();
         }
 
+        private async Task DeleteProduct()
+        {
+            try
+            {
+                string selectedProduct = ((Product)selectedItem).ProId.ToString();
+                apiUrl = "https://localhost:7101/api/Product/" + selectedProduct;
+                using (var client = new HttpClient())
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await client.DeleteAsync(apiUrl);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Produit supprimé avec succès");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Echec de la suppression");
+                        }
+                    }
 
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erreur lors de la suppression du produit : {ex.Message}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+        private async Task DeleteCustomer()
+        {
+            try
+            {
+                string selectedCustomer = ((Customer)selectedItem).CusId.ToString();
+                apiUrl = "https://localhost:7101/api/Product/" + selectedCustomer;
+                using (var client = new HttpClient())
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await client.DeleteAsync(apiUrl);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Client supprimé avec succès");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Echec de la suppression");
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erreur lors de la suppression du produit : {ex.Message}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+        private async Task DeleteSupplier()
+        {
+            try
+            {
+                string selectedSupplier = ((Supplier)selectedItem).SupId.ToString();
+                apiUrl = "https://localhost:7101/api/Supplier/" + selectedSupplier;
+                using (var client = new HttpClient())
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await client.DeleteAsync(apiUrl);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Fournisseur supprimé avec succès");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Echec de la suppression");
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erreur lors de la suppression du fournisseur : {ex.Message}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private void dataTab_selectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            // Récupère l'élément actuellement sélectionné
+            selectedItem = dataTab.SelectedItem;
+        }
     }
+
 }
+
 

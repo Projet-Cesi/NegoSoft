@@ -5,30 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NegoSoftWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
-    <Grid>
+        Title="MainWindow" Height="720" Width="1280"
+        Background="#e0e6b3">
+    <Grid Background="#e0e6b3">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="720"/>
-            <ColumnDefinition Width="1498"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <!-- First row is for the Menu (Auto height means it will take only as much space as needed) -->
-            <RowDefinition Height="Auto" />
-            <!-- Second row is for the DataGrid (Star height means it will take the remaining space) -->
+            <RowDefinition Height="20" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2" Margin="-10,0,10,0">
+        <Menu Grid.Row="0" VerticalAlignment="Top" Height="20" Margin="10,0,10,0" Background="#e0e6b3">
             <MenuItem Header="Produits" Click="MenuItem_Produits"/>
             <MenuItem Header="Clients" Click="MenuItem_Clients"/>
             <MenuItem Header="Fournisseurs" Click="MenuItem_Fournisseurs"/>
             <MenuItem Header="Commandes" Click="MenuItem_Commandes"/>
         </Menu>
-        <DataGrid x:Name="dataTab" AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" Background="Red" MaxHeight="600" Width="1280" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="577" Margin="0,20,938,0"/>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Create" FontSize="20" HorizontalAlignment="Center" Margin="0,643,0,0" Grid.Row="1"  Click="Button_ClickCreate" Width="69"/>
-            <Button Content="Update" FontSize="20" HorizontalAlignment="Left" Margin="67,643,0,0" Grid.Row="1" Click="Button_ClickUpdate" Grid.Column="1" Width="69"/>
-            <Button Content="Delete" FontSize="20" HorizontalAlignment="Left" Margin="141,643,0,0" Grid.Row="1" Click="Button_ClickDelete" Grid.Column="1" Width="69"/>
-            <Button Content="Refresh" FontSize="20" HorizontalAlignment="Left" Margin="78,643,0,0" Grid.Row="1" Click="Button_ClickRefresh" Width="69"/>
+        <DataGrid x:Name="dataTab" Grid.Row="1" AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" Background="#692c33" VerticalAlignment="Stretch" Height="auto" Margin="0,0,0,0"  SelectionChanged="dataTab_selectionChange" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Button Content="Create" FontSize="20" HorizontalAlignment="Center" Margin="20,0,0,0"   Click="Button_ClickCreate" Width="69" Height="30" />
+            <Button Content="Update" FontSize="20" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" Click="Button_ClickUpdate"  Width="69" Height="30"/>
+            <Button Content="Delete" FontSize="20" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" Click="Button_ClickDelete"  Width="69" Height="30"/>
+            <Button Content="Refresh" FontSize="20" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" Click="Button_ClickRefresh" Width="69" Height="30"/>
         </StackPanel>
 
 
