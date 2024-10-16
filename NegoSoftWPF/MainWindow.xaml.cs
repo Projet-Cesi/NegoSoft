@@ -154,7 +154,7 @@ namespace NegoSoftWPF
         }
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            var columnsToShow = new List<string> {"Supplier", "Type", "SupplierOrderDetails", "CustomerOrderDetails", "AlcoholProduct", "DefaultAddress", "CustomerOrders", "SupplierOrders", "Products", "Customer", "Address"};
+            var columnsToShow = new List<string> { "Supplier", "Type", "SupplierOrderDetails", "CustomerOrderDetails", "AlcoholProduct", "DefaultAddress", "CustomerOrders", "SupplierOrders", "Products", "Customer", "Address" };
 
             if (columnsToShow.Contains(e.PropertyName))
             {
@@ -176,13 +176,17 @@ namespace NegoSoftWPF
                     break;
                 case System.Type t when t == typeof(Product):
                     CreateProduct createProduct = new CreateProduct();
-                    createProduct.ShowDialog();
+                    bool? result = createProduct.ShowDialog();
                     break;
-
             }
-            
+            refreshDataGrid();
+
         }
         private void Button_ClickRefresh(object sender, RoutedEventArgs e)
+        {
+            refreshDataGrid();
+        }
+        private void refreshDataGrid()
         {
             switch (dataGridType)
             {

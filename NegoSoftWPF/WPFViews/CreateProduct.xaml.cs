@@ -125,7 +125,7 @@ namespace NegoSoftWPF.WPFViews
 
             return bitmap;
         }
-        private async void CreateProductAPIRequest(object sender, RoutedEventArgs e)
+        private async void CreateProductAPIRequest()
         {
             if (NameBox.Text != "" &&
                 DescriptionBox.Text != "" &&
@@ -157,10 +157,16 @@ namespace NegoSoftWPF.WPFViews
                 //request + checking
                 HttpResponseMessage response = await client.PostAsync(request, rnr);
                 string responseBody = await response.Content.ReadAsStringAsync();
-                MessageBox.Show(responseBody);
             }
         }
-        
+
+        private async void CreateProductButton(object sender, EventArgs e)
+        {
+            CreateProductAPIRequest();
+            Close();
+        }
+
+
         private void DecimalTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             e.Handled = !IsTextDecimal((sender as TextBox).Text + e.Text);

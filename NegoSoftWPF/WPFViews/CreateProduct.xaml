@@ -47,7 +47,7 @@
         </Label>
         <TextBox x:Name="BoxPriceBox" DataObject.Pasting="NumericTextBox_Pasting" PreviewTextInput="DecimalTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="22"  Grid.Row="6" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="268"  Margin="10,20,0,0"/>
         <Button x:Name="uploadPicButton" Content="Upload product picture" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="7" VerticalAlignment="Top" Click="pickProdPic"/>
-        <Button Content="Create Product" HorizontalAlignment="Center" Grid.Row="8" VerticalAlignment="Top" Margin="0,60,0,0" Width="150" Click="CreateProductAPIRequest"/>
+        <Button Content="Create Product" HorizontalAlignment="Center" Grid.Row="8" VerticalAlignment="Top" Margin="0,60,0,0" Width="150" Click="CreateProductButton"/>
         <Image x:Name="MyImageControl" HorizontalAlignment="Left" Height="76" Margin="177,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="75" Grid.RowSpan="2"/>
     </Grid>
 
