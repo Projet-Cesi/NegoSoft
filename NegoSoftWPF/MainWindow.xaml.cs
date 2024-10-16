@@ -163,8 +163,24 @@ namespace NegoSoftWPF
         }
         private void Button_ClickCreate(object sender, RoutedEventArgs e)
         {
-            CreateProduct createProduct = new CreateProduct();
-            createProduct.ShowDialog();
+            switch (dataGridType)
+            {
+                case System.Type t when t == typeof(CustomerOrder):
+                    MessageBox.Show("create Order");
+                    break;
+                case System.Type t when t == typeof(Customer):
+                    MessageBox.Show("create customer");
+                    break;
+                case System.Type t when t == typeof(Supplier):
+                    MessageBox.Show("create Supplier");
+                    break;
+                case System.Type t when t == typeof(Product):
+                    CreateProduct createProduct = new CreateProduct();
+                    createProduct.ShowDialog();
+                    break;
+
+            }
+            
         }
         private void Button_ClickRefresh(object sender, RoutedEventArgs e)
         {
