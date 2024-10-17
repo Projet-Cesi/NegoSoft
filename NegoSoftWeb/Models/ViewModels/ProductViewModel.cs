@@ -11,6 +11,6 @@
         public Guid ProSupplierId { get; set; }
         public float ProBoxPrice { get; set; }
 
-        public IFormFile ProImageFile { get; set; }
+        //public IFormFile ProImageFile { get; set; }
     }
 }
