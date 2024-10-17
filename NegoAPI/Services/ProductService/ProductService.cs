@@ -30,13 +30,18 @@ namespace NegoAPI.Services.ProductService
                 .FirstOrDefaultAsync(m => m.ProId == id);
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<bool> CreateProductAsync(Product product)
         {
-            product.ProId = Guid.NewGuid();
-            product.ProPrice = (float)Math.Round(product.ProPrice, 2);
-            _context.Add(product);
-            await _context.SaveChangesAsync();
-            return product;
+            try
+            {
+                await _context.Products.AddAsync(product);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<Product> UpdateProductAsync(Product product)

@@ -8,7 +8,7 @@ namespace NegoAPI.Services.ProductService
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<Product> GetProductByIdAsync(Guid id);
-        Task<Product> CreateProductAsync(Product product);
+        Task<bool> CreateProductAsync(Product product);
         Task<Product> UpdateProductAsync(Product product);
         Task<Product> DeleteProductAsync(Guid id);
         Task<bool> ProductExistsAsync(Guid id);

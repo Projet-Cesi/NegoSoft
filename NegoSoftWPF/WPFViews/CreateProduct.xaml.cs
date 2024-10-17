@@ -24,6 +24,9 @@ using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Net.Http.Headers;
+using NegoSoftWeb.Models.ViewModels;
+using NegoSoftShared.Models.ViewModels;
 
 namespace NegoSoftWPF.WPFViews
 {
@@ -33,7 +36,7 @@ namespace NegoSoftWPF.WPFViews
     public partial class CreateProduct : Window
     {
         //attributes
-        private string selectedPicPath;
+        private string _selectedPicPath;
         private static readonly HttpClient client = new HttpClient();
         public CreateProduct()
         {
@@ -58,6 +61,7 @@ namespace NegoSoftWPF.WPFViews
                         List<Supplier> suppliers = JsonConvert.DeserializeObject<List<Supplier>>(jsonResponse);
                         suppliersBox.ItemsSource = suppliers;
                         suppliersBox.DisplayMemberPath = "SupName";
+                        suppliersBox.SelectedValuePath = "SupId";
                         suppliersBox.SelectedIndex = 0;
                     }
                     else
@@ -86,6 +90,7 @@ namespace NegoSoftWPF.WPFViews
                         List<NegoSoftShared.Models.Entities.Type> types = JsonConvert.DeserializeObject<List<NegoSoftShared.Models.Entities.Type>>(jsonResponse);
                         typeBox.ItemsSource = types;
                         typeBox.DisplayMemberPath = "TypLibelle";
+                        typeBox.SelectedValuePath = "TypId";
                         typeBox.SelectedIndex = 0;
                     }
                     else
@@ -99,71 +104,77 @@ namespace NegoSoftWPF.WPFViews
                 }
             }
         }
-        private void pickProdPic(object sender, RoutedEventArgs e)
+        
+
+        private void BrowseImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png";
             if (openFileDialog.ShowDialog() == true)
             {
-                selectedPicPath = openFileDialog.FileName;
+                _selectedPicPath = openFileDialog.FileName;
+                //txtSelectedImage.Text = System.IO.Path.GetFileName(_selectedPicPath);
             }
-            IFormFile picForm = GetFormFileFromPath(selectedPicPath);
-            var image = ConvertIFormFileToBitmapImage(picForm);
-            MyImageControl.Source = image;
         }
-        private BitmapImage ConvertIFormFileToBitmapImage(IFormFile formFile)
-        {
-            BitmapImage bitmap = new BitmapImage();
 
-            using (var stream = formFile.OpenReadStream()) // Ouvrir un flux à partir de IFormFile
+        private async void CreateProduct_Click(object sender, RoutedEventArgs e)
+        {
+            var productViewModel = new ProductAddViewModel
             {
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Charger immédiatement l'image dans la mémoire
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
+                ProId = Guid.NewGuid(),
+                ProName = NameBox.Text,
+                ProDescription = DescriptionBox.Text,
+                ProSupplierId = (Guid)suppliersBox.SelectedValue,
+                ProPrice = float.Parse(PriceBox.Text),
+                ProBoxPrice = float.TryParse(BoxPriceBox.Text, out var boxPrice) ? (float?)boxPrice : null,
+                ProTypeId = (Guid)typeBox.SelectedValue,
+                ProStock = int.Parse(StockBox.Text),
+            };
+
+            string imagePath = _selectedPicPath;
+
+            if (System.IO.File.Exists(imagePath))
+            {
+                await UploadProductAsync(productViewModel, imagePath);
             }
-
-            return bitmap;
-        }
-        private async void CreateProductAPIRequest()
-        {
-            if (NameBox.Text != "" &&
-                DescriptionBox.Text != "" &&
-                BoxPriceBox.Text != "" &&
-                StockBox.Text != "" &&
-                selectedPicPath != "")
+            else
             {
-                Supplier selectedSupplier = (Supplier)suppliersBox.SelectedValue;
-                NegoSoftShared.Models.Entities.Type selectedType = (NegoSoftShared.Models.Entities.Type)typeBox.SelectedValue;
-                string supplierId = selectedSupplier.SupId.ToString();
-                string typeId = selectedType.TypId.ToString();
-                string request = "https://localhost:7101/api/Product";
-                //IFormFile prodPic = GetFormFileFromPath(selectedPicPath);
-                var product = new NegoSoftWeb.Models.ViewModels.ProductViewModel
+                MessageBox.Show("Image non trouvée.");
+            }
+        }
+
+        private async Task UploadProductAsync(ProductAddViewModel productViewModel, string imagePath)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7101/"); 
+
+                using (var content = new MultipartFormDataContent())
                 {
-                    ProName = NameBox.Text,
-                    ProDescription = DescriptionBox.Text,
-                    ProSupplierId = Guid.Parse(supplierId),
-                    ProPrice = float.Parse(PriceBox.Text),
-                    ProBoxPrice = float.Parse(BoxPriceBox.Text),
-                    ProTypeId = Guid.Parse(typeId),
-                    ProStock = int.Parse(StockBox.Text),
-                    ProPictureName = NameBox.Text
-                    //ProImageFile = prodPic
-                };
+                    var fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+                    var streamContent = new StreamContent(fileStream);
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                    content.Add(streamContent, "image", System.IO.Path.GetFileName(imagePath));
 
-                var rnr = JsonContent.Create(product);
+                    content.Add(new StringContent(productViewModel.ProName), "ProName");
+                    content.Add(new StringContent(productViewModel.ProDescription ?? ""), "ProDescription");
+                    content.Add(new StringContent(productViewModel.ProSupplierId.ToString()), "ProSupplierId");
+                    content.Add(new StringContent(productViewModel.ProPrice.ToString()), "ProPrice");
+                    content.Add(new StringContent(productViewModel.ProBoxPrice?.ToString() ?? ""), "ProBoxPrice");
+                    content.Add(new StringContent(productViewModel.ProTypeId.ToString()), "ProTypeId");
+                    content.Add(new StringContent(productViewModel.ProStock.ToString()), "ProStock");
 
-                //request + checking
-                HttpResponseMessage response = await client.PostAsync(request, rnr);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                    var response = await client.PostAsync("api/product", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Produit crée avec succès");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Errreur lors de la création du produit :  {response.ReasonPhrase}");
+                    }
+                }
             }
-        }
-
-        private async void CreateProductButton(object sender, EventArgs e)
-        {
-            CreateProductAPIRequest();
-            Close();
         }
 
 
@@ -191,31 +202,6 @@ namespace NegoSoftWPF.WPFViews
             {
                 e.CancelCommand();
             }
-        }
-        public static IFormFile GetFormFileFromPath(string filePath)
-        {
-            // Lire le fichier depuis le disque
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-
-            // Obtenir les informations sur le fichier
-            var fileInfo = new FileInfo(filePath);
-
-            // Utiliser un MemoryStream pour représenter les données
-            var memoryStream = new MemoryStream();
-            fileStream.CopyTo(memoryStream);
-            memoryStream.Position = 0;  // Remettre le curseur au début du stream
-
-            // Créer un FormFile, qui implémente IFormFile
-            IFormFile formFile = new FormFile(memoryStream, 0, memoryStream.Length, fileInfo.Name, fileInfo.Name)
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "image/jpeg"  // Type MIME du fichier
-            };
-
-            // Fermer le fileStream (il n'est plus nécessaire)
-            fileStream.Close();
-
-            return formFile;
         }
     }
 }

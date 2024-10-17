@@ -13,10 +13,12 @@ namespace NegoAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Products
@@ -49,25 +51,48 @@ namespace NegoAPI.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody]NegoSoftWeb.Models.ViewModels.ProductViewModel product)
+        public async Task<ActionResult<Product>> CreateProduct([FromForm] ProductAddViewModel productViewModel, IFormFile image)
         {
-            product.ProPictureName = await _productService.UploadFile(product);
-            var newProduct = new Product
+            if (productViewModel == null || image == null)
             {
-                ProId = Guid.NewGuid(),
-                ProName = product.ProName,
-                ProDescription = product.ProDescription,
-                ProPrice = product.ProPrice,
-                ProBoxPrice = product.ProBoxPrice,
-                ProStock = product.ProStock,
-                ProPictureName = product.ProPictureName,
-                ProTypeId = product.ProTypeId,
-                ProSupplierId = product.ProSupplierId
+                return BadRequest("Invalid product data or missing image.");
+            }
+
+            // Save image to wwwroot
+            string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+            if (!Directory.Exists(imagePath))
+            {
+                Directory.CreateDirectory(imagePath);
+            }
+
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            string fullPath = Path.Combine(imagePath, fileName);
+
+            using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            var product = new Product
+            {
+                ProId = productViewModel.ProId,
+                ProName = productViewModel.ProName,
+                ProDescription = productViewModel.ProDescription,
+                ProSupplierId = productViewModel.ProSupplierId,
+                ProPrice = productViewModel.ProPrice,
+                ProBoxPrice = productViewModel.ProBoxPrice,
+                ProTypeId = productViewModel.ProTypeId,
+                ProStock = productViewModel.ProStock,
+                ProPictureName = fileName
             };
 
-            await _productService.CreateProductAsync(newProduct);
+            var result = await _productService.CreateProductAsync(product);
+            if (!result)
+            {
+                return StatusCode(500, "Failed to create product.");
+            }
 
-            return CreatedAtAction(nameof(GetProduct), new { id = newProduct.ProId }, newProduct);
+            return Ok("Product created successfully.");
         }
 
         // PUT: api/Products/5
