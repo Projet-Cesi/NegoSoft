@@ -119,28 +119,44 @@ namespace NegoSoftWPF.WPFViews
 
         private async void CreateProduct_Click(object sender, RoutedEventArgs e)
         {
-            var productViewModel = new ProductAddViewModel
-            {
-                ProId = Guid.NewGuid(),
-                ProName = NameBox.Text,
-                ProDescription = DescriptionBox.Text,
-                ProSupplierId = (Guid)suppliersBox.SelectedValue,
-                ProPrice = float.Parse(PriceBox.Text),
-                ProBoxPrice = float.TryParse(BoxPriceBox.Text, out var boxPrice) ? (float?)boxPrice : null,
-                ProTypeId = (Guid)typeBox.SelectedValue,
-                ProStock = int.Parse(StockBox.Text),
-            };
+            if (string.IsNullOrEmpty(NameBox.Text) 
+                || string.IsNullOrEmpty(DescriptionBox.Text) 
+                || string.IsNullOrEmpty(PriceBox.Text) 
+                || string.IsNullOrEmpty(StockBox.Text) 
+                || string.IsNullOrEmpty(YearBox.Text)
+                || string.IsNullOrEmpty(BoxPriceBox.Text))
 
-            string imagePath = _selectedPicPath;
-
-            if (System.IO.File.Exists(imagePath))
             {
-                await UploadProductAsync(productViewModel, imagePath);
+                MessageBox.Show("Veuillez remplir tous les champs.");
             }
             else
             {
-                MessageBox.Show("Image non trouvée.");
+                var productViewModel = new ProductAddViewModel
+                {
+                    ProId = Guid.NewGuid(),
+                    ProName = NameBox.Text,
+                    ProDescription = DescriptionBox.Text,
+                    ProSupplierId = (Guid)suppliersBox.SelectedValue,
+                    ProPrice = float.Parse(PriceBox.Text),
+                    ProBoxPrice = float.TryParse(BoxPriceBox.Text, out var boxPrice) ? (float?)boxPrice : null,
+                    ProTypeId = (Guid)typeBox.SelectedValue,
+                    ProStock = int.Parse(StockBox.Text),
+                    ProYear = int.Parse(YearBox.Text),
+                    ProAlcoholVolume = float.Parse(AlcoholVolumeBox.Text)
+                };
+
+                string imagePath = _selectedPicPath;
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    await UploadProductAsync(productViewModel, imagePath);
+                }
+                else
+                {
+                    MessageBox.Show("Image non trouvée.");
+                }
             }
+                
         }
 
         private async Task UploadProductAsync(ProductAddViewModel productViewModel, string imagePath)
@@ -163,15 +179,28 @@ namespace NegoSoftWPF.WPFViews
                     content.Add(new StringContent(productViewModel.ProBoxPrice?.ToString() ?? ""), "ProBoxPrice");
                     content.Add(new StringContent(productViewModel.ProTypeId.ToString()), "ProTypeId");
                     content.Add(new StringContent(productViewModel.ProStock.ToString()), "ProStock");
+                    content.Add(new StringContent(productViewModel.ProYear.ToString()), "ProYear");
+                    content.Add(new StringContent(productViewModel.ProAlcoholVolume.ToString()), "ProAlcoholVolume");
 
                     var response = await client.PostAsync("api/product", content);
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show("Produit crée avec succès");
+                        var responseMessage = await response.Content.ReadAsStringAsync();
+                        if (responseMessage.Contains("desactivated"))
+                        {
+                            MessageBox.Show("Le produit a été désactivé avec succès.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Le produit a été supprimé avec succès.");
+                        }
+
+                        this.Close();
                     }
                     else
                     {
-                        MessageBox.Show($"Errreur lors de la création du produit :  {response.ReasonPhrase}");
+                        MessageBox.Show($"Erreur lors de la création du produit : {response.ReasonPhrase}");
+                        this.Close();
                     }
                 }
             }

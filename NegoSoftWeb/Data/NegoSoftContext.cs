@@ -15,7 +15,6 @@ namespace NegoSoftWeb.Data
         public DbSet<NegoSoftShared.Models.Entities.Type> Types { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<AlcoholProduct> AlcoholProducts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerOrder> CustomerOrders { get; set; }
@@ -72,13 +71,6 @@ namespace NegoSoftWeb.Data
                 .WithMany(t => t.Products) // Un type peut être associé à plusieurs produits
                 .HasForeignKey(p => p.ProTypeId) // La clé étrangère du type du produit
                 .OnDelete(DeleteBehavior.Restrict);  // Quand un type est supprimé, on ne supprime pas automatiquement les produits associés
-
-            // Configuration des relations pour AlcoholProduct
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.AlcoholProduct) // Un produit peut est associé à un produit alcoolisé
-                .WithOne(ap => ap.Product) // Un produit alcoolisé est associé à un produit
-                .HasForeignKey<AlcoholProduct>(ap => ap.ProTypeId) // La clé étrangère du produit alcoolisé
-                .OnDelete(DeleteBehavior.Restrict);  //Quand un produit est supprimé, on ne supprime pas automatiquement le produit alcoolisé associé
 
             // Configuration des relations pour CustomerOrderDetails (lignes de commande client)
             modelBuilder.Entity<CustomerOrderDetails>()

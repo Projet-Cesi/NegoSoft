@@ -237,31 +237,31 @@ namespace NegoSoftWPF
             {
                 string selectedProduct = ((Product)selectedItem).ProId.ToString();
                 apiUrl = "https://localhost:7101/api/Product/" + selectedProduct;
-                using (var client = new HttpClient())
+
+                using var client = new HttpClient();
+                try
                 {
-                    try
+                    HttpResponseMessage response = await client.DeleteAsync(apiUrl);
+                    if (response.IsSuccessStatusCode)
                     {
-                        HttpResponseMessage response = await client.DeleteAsync(apiUrl);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            MessageBox.Show("Produit supprimé avec succès");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Echec de la suppression");
-                        }
+                        string resultMessage = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show(resultMessage);
                     }
-
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show($"Erreur lors de la suppression du produit : {ex.Message}");
-
+                        MessageBox.Show("Echec de la suppression");
                     }
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erreur lors de la suppression du produit : {ex.Message}");
+
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Erreur: {ex.Message}");
             }
         }
         private async Task DeleteCustomer()

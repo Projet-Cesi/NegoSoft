@@ -16,5 +16,7 @@ namespace NegoSoftShared.Models.ViewModels
         public float? ProBoxPrice { get; set; }
         public Guid ProTypeId { get; set; }
         public int ProStock { get; set; }
+        public int ProYear { get; set; }
+        public float ProAlcoholVolume { get; set; }
     }
 }

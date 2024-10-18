@@ -25,12 +25,12 @@
                 @Html.Raw($"<option value='{supplier.SupId}' {selectedAttribute}>{supplier.SupName}</option>")
             }
         </select>
-        <select name="alcoholProductId" onchange="this.form.submit()" class="form-control">
+        <select name="productYear" onchange="this.form.submit()" class="form-control">
             <option value="">Toutes les Années</option>
-            @foreach (var year in Model.AlcoholProducts)
+            @foreach (var year in Model.ProductYears)
             {
-                var selectedAttribute = Model.SelectedAlcoholProductId == year.ApId ? "selected" : "";
-                @Html.Raw($"<option value='{year.ApId}' {selectedAttribute}>{year.ApYear}</option>")
+                var selectedAttribute = Model.SelectedYear == year ? "selected" : "";
+                @Html.Raw($"<option value='{year}' {selectedAttribute}>{year}</option>")
             }
         </select>
 
@@ -49,9 +49,13 @@
     <div class="row">
         @foreach (var product in Model.Products)
         {
+          if (!product.ProIsActive)
+			{
+				continue;
+			}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
-                    <img src="/uploads/@product.ProPictureName" class="card-img-top img-responsive" alt="@product.ProName" />
+                    <img src="https://localhost:7101/uploads/@product.ProPictureName" class="card-img-top img-responsive" alt="@product.ProName" />
                     <div class="card-body">
                         <h5 class="card-title">@product.ProName</h5>
                         <p class="card-text">@product.ProDescription</p>

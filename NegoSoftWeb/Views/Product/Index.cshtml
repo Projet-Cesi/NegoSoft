@@ -10,6 +10,10 @@
     <div class="row">
         @foreach (var product in Model)
         {
+            @if (!product.ProIsActive)
+			{
+				continue;
+			}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <img src="https://localhost:7101/uploads/@product.ProPictureName" class="card-img-top img-responsive" alt="@product.ProName" />

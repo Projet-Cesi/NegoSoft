@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NegoSoftWPF.WPFViews"
         mc:Ignorable="d"
-        Title="CreateProduct" Height="450" Width="300">
+        Title="CreateProduct" Height="600" Width="300">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -46,9 +49,16 @@
             Price by box
         </Label>
         <TextBox x:Name="BoxPriceBox" DataObject.Pasting="NumericTextBox_Pasting" PreviewTextInput="DecimalTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="22"  Grid.Row="6" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="268"  Margin="10,20,0,0"/>
-        <Button x:Name="uploadPicButton" Content="Upload product picture" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="7" VerticalAlignment="Top" Click="BrowseImage_Click"/>
-        <Button Content="Create Product" HorizontalAlignment="Center" Grid.Row="8" VerticalAlignment="Top" Margin="0,60,0,0" Width="150" Click="CreateProduct_Click"/>
-        <Image x:Name="MyImageControl" HorizontalAlignment="Left" Height="76" Margin="177,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="75" Grid.RowSpan="2"/>
+        <Label Grid.Row="7">
+            Year
+        </Label>
+        <TextBox x:Name="YearBox" DataObject.Pasting="NumericTextBox_Pasting" PreviewTextInput="DecimalTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="22"  Grid.Row="7" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="268" Margin="10,20,0,0"/>
+        <Label Grid.Row="8">
+            Volume d'alcool
+        </Label>
+        <TextBox x:Name="AlcoholVolumeBox" DataObject.Pasting="NumericTextBox_Pasting" PreviewTextInput="DecimalTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="22"  Grid.Row="8" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="268" Margin="10,20,0,0"/>
+        <Button x:Name="uploadPicButton" Content="Upload product picture" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="9" VerticalAlignment="Top" Click="BrowseImage_Click"/>
+        <Button Content="Create Product" HorizontalAlignment="Center" Grid.Row="9" VerticalAlignment="Top" Margin="0,60,0,0" Width="150" Click="CreateProduct_Click"/>
     </Grid>
 
 

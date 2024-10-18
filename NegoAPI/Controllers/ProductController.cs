@@ -83,6 +83,9 @@ namespace NegoAPI.Controllers
                 ProBoxPrice = productViewModel.ProBoxPrice,
                 ProTypeId = productViewModel.ProTypeId,
                 ProStock = productViewModel.ProStock,
+                ProYear = productViewModel.ProYear,
+                ProAlcoholVolume = productViewModel.ProAlcoholVolume,
+                ProIsActive = true,
                 ProPictureName = fileName
             };
 
@@ -140,14 +143,25 @@ namespace NegoAPI.Controllers
         {
             try
             {
-                await _productService.DeleteProductAsync(id);
+                var response = await _productService.DeleteProductAsync(id);
+
+                if (response == null)
+                {
+                    return NotFound("Produit introuvable.");
+                }
+
+                if (!response.ProIsActive)
+                {
+                    return Ok("Produit désactivé avec succès.");
+                }
+
+                return Ok("Produit supprimé avec succès.");
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
 
-            return NoContent();
         }
     }
 }
